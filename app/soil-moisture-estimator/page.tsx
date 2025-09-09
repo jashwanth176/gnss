@@ -1,6 +1,8 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
+import { useAuth } from "@/contexts/AuthContext"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -29,6 +31,7 @@ import {
   Zap
 } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
 
 interface WeatherData {
   temperature: number
@@ -149,6 +152,33 @@ const getWeatherData = async (location: string): Promise<WeatherData> => {
 }
 
 export default function SoilMoistureEstimatorPage() {
+  const { user, loading } = useAuth()
+  const router = useRouter()
+  
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push('/login')
+    }
+  }, [user, loading, router])
+
+  // Show loading while checking auth
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-background to-muted flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary mx-auto"></div>
+          <p className="mt-4 text-muted-foreground">Loading...</p>
+        </div>
+      </div>
+    )
+  }
+
+  // Don't render if not authenticated
+  if (!user) {
+    return null
+  }
+  
   const [selectedLocation, setSelectedLocation] = useState("New Delhi, India")
   const [customLocation, setCustomLocation] = useState("")
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null)
@@ -237,8 +267,8 @@ export default function SoilMoistureEstimatorPage() {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b glass-header sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
+        <div className="container mx-auto px-4 py-6">
+          <div className="flex items-center justify-between h-24">
             <div className="flex items-center space-x-4">
               <Link href="/">
                 <Button variant="ghost" size="sm">
@@ -246,9 +276,25 @@ export default function SoilMoistureEstimatorPage() {
                   Back to Home
                 </Button>
               </Link>
-              <div>
-                <h1 className="text-2xl font-bold text-gradient-purple">AI Soil Moisture Estimator</h1>
-                <p className="text-sm text-muted-foreground">GNSS-R powered precision agriculture</p>
+              <div className="flex items-center space-x-4">
+                <Image
+                  src="/Logo.png"
+                  alt="GNSS-R Portal"
+                  width={120}
+                  height={64}
+                  className="rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+                />
+                <Image
+                  src="/IIT_Tirupati_logo.svg"
+                  alt="IIT Tirupati"
+                  width={80}
+                  height={60}
+                  className="rounded-md shadow-lg hover:shadow-xl transition-all duration-300"
+                />
+                <div>
+                  <h1 className="text-2xl font-bold text-gradient-purple">AI Soil Moisture Estimator</h1>
+                  <p className="text-sm text-muted-foreground">GNSS-R powered precision agriculture</p>
+                </div>
               </div>
             </div>
             <Badge variant="secondary" className="bg-green-500/20 text-green-700">

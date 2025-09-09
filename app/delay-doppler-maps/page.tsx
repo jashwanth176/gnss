@@ -19,6 +19,7 @@ import {
   BarChart3
 } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
 import dynamic from "next/dynamic"
 
 // Import Canvas component dynamically with proper loading
@@ -201,7 +202,21 @@ export default function DelayDopplerMapsPage() {
                   Back to Home
                 </Button>
               </Link>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-3">
+                <Image
+                  src="/Logo.png"
+                  alt="GNSS-R Portal"
+                  width={28}
+                  height={28}
+                  className="rounded-lg"
+                />
+                <Image
+                  src="/IIT_Tirupati_logo.svg"
+                  alt="IIT Tirupati"
+                  width={24}
+                  height={24}
+                  className="rounded"
+                />
                 <Satellite className="w-6 h-6 text-blue-400" />
                 <h1 className="text-2xl font-bold text-white">Real-time Delay-Doppler Maps</h1>
               </div>

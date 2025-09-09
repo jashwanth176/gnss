@@ -1,6 +1,8 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
+import { useAuth } from "@/contexts/AuthContext"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -31,6 +33,7 @@ import {
   Zap
 } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
 
 interface Dataset {
   id: string
@@ -126,6 +129,33 @@ const sampleDatasets: Dataset[] = [
 ]
 
 export default function DownloadDatasetPage() {
+  const { user, loading } = useAuth()
+  const router = useRouter()
+  
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push('/login')
+    }
+  }, [user, loading, router])
+
+  // Show loading while checking auth
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-background to-muted flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary mx-auto"></div>
+          <p className="mt-4 text-muted-foreground">Loading...</p>
+        </div>
+      </div>
+    )
+  }
+
+  // Don't render if not authenticated
+  if (!user) {
+    return null
+  }
+  
   const [selectedDatasets, setSelectedDatasets] = useState<string[]>([])
   const [filterType, setFilterType] = useState<string>('all')
   const [searchQuery, setSearchQuery] = useState('')
@@ -207,8 +237,8 @@ export default function DownloadDatasetPage() {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b glass-header sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
+        <div className="container mx-auto px-4 py-6">
+          <div className="flex items-center justify-between h-24">
             <div className="flex items-center space-x-4">
               <Link href="/">
                 <Button variant="ghost" size="sm">
@@ -216,9 +246,25 @@ export default function DownloadDatasetPage() {
                   Back to Home
                 </Button>
               </Link>
-              <div>
-                <h1 className="text-2xl font-bold text-gradient-cyan">Sample Datasets</h1>
-                <p className="text-sm text-muted-foreground">High-quality GNSS-R research datasets</p>
+              <div className="flex items-center space-x-4">
+                <Image
+                  src="/Logo.png"
+                  alt="GNSS-R Portal"
+                  width={120}
+                  height={64}
+                  className="rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+                />
+                <Image
+                  src="/IIT_Tirupati_logo.svg"
+                  alt="IIT Tirupati"
+                  width={80}
+                  height={60}
+                  className="rounded-md shadow-lg hover:shadow-xl transition-all duration-300"
+                />
+                <div>
+                  <h1 className="text-2xl font-bold text-gradient-cyan">Sample Datasets</h1>
+                  <p className="text-sm text-muted-foreground">High-quality GNSS-R research datasets</p>
+                </div>
               </div>
             </div>
             <div className="flex items-center space-x-2">

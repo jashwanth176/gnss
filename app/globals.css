@@ -72,6 +72,24 @@
       radial-gradient(ellipse at bottom left, rgba(156, 39, 176, 0.04) 0%, transparent 50%),
       radial-gradient(ellipse at bottom right, rgba(63, 81, 181, 0.04) 0%, transparent 50%),
       linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    /* Hide scrollbars */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+  }
+  
+  /* Hide scrollbars for webkit browsers */
+  body::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Hide scrollbars for all elements */
+  *::-webkit-scrollbar {
+    display: none;
+  }
+  
+  * {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
   }
   
   /* Dark mode background */
@@ -118,17 +136,17 @@
   }
   
   .glass-header {
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(242, 236, 221, 0.85);
     backdrop-filter: blur(32px);
-    border-bottom: 1px solid rgba(33, 150, 243, 0.1);
-    box-shadow: 0 4px 24px rgba(33, 150, 243, 0.04);
+    border-bottom: 1px solid rgba(33, 150, 243, 0.15);
+    box-shadow: 0 4px 24px rgba(33, 150, 243, 0.06);
   }
   
   .dark .glass-header {
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(242, 236, 221, 0.85);
     backdrop-filter: blur(24px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
   }
 
   .animate-fade-in {

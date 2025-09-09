@@ -38,6 +38,7 @@ import { UserMenu } from "@/components/UserMenu"
 import { useAuth } from "@/contexts/AuthContext"
 import dynamic from 'next/dynamic';
 import Link from "next/link"
+import Image from "next/image"
 import { fetchLatestUpdates } from "@/lib/fetchArxivUpdates"
 
 const SatelliteMap = dynamic(() => import("@/components/SatelliteMap"), { ssr: false });
@@ -214,28 +215,40 @@ export default function HomePage() {
     <div className="min-h-screen bg-background overflow-x-hidden">
       {/* Header */}
       <header className="fixed top-0 z-50 w-full glass-header transition-all duration-300">
-        <div className="container flex h-16 items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <div className="relative flex items-center space-x-2">
-              <div className="relative">
-                <Satellite className="h-8 w-8 text-primary animate-float glow-cyan" />
-                <div className="absolute -top-1 -right-1 w-3 h-3 bg-primary/30 rounded-full animate-ping"></div>
-              </div>
-              <Waves className="h-6 w-6 text-secondary animate-float glow-purple" style={{ animationDelay: "0.5s" }} />
+        <div className="container flex h-24 items-center justify-between">
+          <div className="flex items-center space-x-4">
+            {/* Logos */}
+            <div className="flex items-center space-x-4">
+              <Image
+                src="/Logo.png"
+                alt="GNSS-R Portal"
+                width={120}
+                height={64}
+                className="rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+              />
+              <Image
+                src="/IIT_Tirupati_logo.svg"
+                alt="IIT Tirupati"
+                width={80}
+                height={60}
+                className="rounded-md shadow-lg hover:shadow-xl transition-all duration-300"
+              />
             </div>
+            
+            {/* Title */}
             <div className="hidden sm:block">
-              <span className="text-xl font-bold text-gradient-cyan animate-text-shimmer">
-                GNSS-R Tool
+              <span className="text-2xl font-bold text-gray-900 dark:text-gray-100 tracking-wide">
+                GNSS-R Portal
               </span>
             </div>
           </div>
 
-          <nav className="hidden lg:flex items-center space-x-8">
+      <nav className="hidden lg:flex items-center space-x-10">
             {["Home", "Data Portal", "Live Visualization", "Documentation", "Contact"].map((item, index) => (
               <button
                 key={item}
                 onClick={() => scrollToSection(item)}
-                className="text-sm font-medium hover:text-primary transition-all duration-300 relative group animate-fade-in-up"
+        className="text-sm font-semibold text-gray-900 dark:text-gray-200 hover:text-primary transition-colors duration-200 relative group"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 {item}
@@ -253,19 +266,19 @@ export default function HomePage() {
                 <UserMenu />
               ) : (
                 <>
-                  <AuthModal defaultTab="signin">
+                  <Link href="/login">
                     <Button variant="outline" size="sm" className="glass hover:scale-105 transition-all duration-300 border-primary/20 hover:border-primary/40">
                       Login
                     </Button>
-                  </AuthModal>
-                  <AuthModal defaultTab="signup">
+                  </Link>
+                  <Link href="/login">
                     <Button
                       size="sm"
                       className="hover:scale-105 transition-all duration-300 bg-gradient-to-r from-primary to-secondary glow-cyan"
                     >
                       Sign Up
                     </Button>
-                  </AuthModal>
+                  </Link>
                 </>
               )}
             </div>
@@ -300,16 +313,16 @@ export default function HomePage() {
                   </div>
                 ) : (
                   <>
-                    <AuthModal defaultTab="signin">
-                      <Button variant="outline" size="sm" className="flex-1 glass border-primary/20">
+                    <Link href="/login" className="flex-1">
+                      <Button variant="outline" size="sm" className="w-full glass border-primary/20">
                         Login
                       </Button>
-                    </AuthModal>
-                    <AuthModal defaultTab="signup">
-                      <Button size="sm" className="flex-1 bg-gradient-to-r from-primary to-secondary">
+                    </Link>
+                    <Link href="/login" className="flex-1">
+                      <Button size="sm" className="w-full bg-gradient-to-r from-primary to-secondary">
                         Sign Up
                       </Button>
-                    </AuthModal>
+                    </Link>
                   </>
                 )}
               </div>
@@ -399,34 +412,49 @@ export default function HomePage() {
                 size="lg"
                 variant="outline"
                 className="group hover:scale-105 transition-all duration-300 glass border-primary/30 hover:border-primary/50"
-                asChild
+                onClick={() => {
+                  if (user) {
+                    window.location.href = '/delay-doppler-maps'
+                  } else {
+                    window.location.href = '/login'
+                  }
+                }}
               >
-                <Link href="/delay-doppler-maps">
-                  <TrendingUp className="h-5 w-5 mr-2 group-hover:scale-110 transition-transform" />
-                  View Delay-Doppler Maps
-                </Link>
+                <TrendingUp className="h-5 w-5 mr-2 group-hover:scale-110 transition-transform" />
+                View Delay-Doppler Maps
+                {!user && <span className="ml-2 text-xs">(Login Required)</span>}
               </Button>
               <Button
                 size="lg"
                 variant="outline"
                 className="group hover:scale-105 transition-all duration-300 glass border-secondary/30 hover:border-secondary/50"
-                asChild
+                onClick={() => {
+                  if (user) {
+                    window.location.href = '/soil-moisture-estimator'
+                  } else {
+                    window.location.href = '/login'
+                  }
+                }}
               >
-                <Link href="/soil-moisture-estimator">
-                  <Brain className="h-5 w-5 mr-2 group-hover:pulse transition-all" />
-                  Try AI Soil Moisture Estimator
-                </Link>
+                <Brain className="h-5 w-5 mr-2 group-hover:pulse transition-all" />
+                Try AI Soil Moisture Estimator
+                {!user && <span className="ml-2 text-xs">(Login Required)</span>}
               </Button>
               <Button
                 size="lg"
                 variant="outline"
                 className="group hover:scale-105 transition-all duration-300 glass border-accent/30 hover:border-accent/50"
-                asChild
+                onClick={() => {
+                  if (user) {
+                    window.location.href = '/download-datasets'
+                  } else {
+                    window.location.href = '/login'
+                  }
+                }}
               >
-                <Link href="/download-datasets">
-                  <Download className="h-5 w-5 mr-2 group-hover:bounce transition-all" />
-                  Download Sample Dataset
-                </Link>
+                <Download className="h-5 w-5 mr-2 group-hover:bounce transition-all" />
+                Download Sample Dataset
+                {!user && <span className="ml-2 text-xs">(Login Required)</span>}
               </Button>
             </div>
 
@@ -589,10 +617,17 @@ export default function HomePage() {
                   variant="outline"
                   size="lg"
                   className="group hover:scale-105 transition-all duration-300 glass border-primary/20"
-                  onClick={() => window.open('/delay-doppler-maps', '_self')}
+                  onClick={() => {
+                    if (user) {
+                      window.location.href = '/delay-doppler-maps'
+                    } else {
+                      window.location.href = '/login'
+                    }
+                  }}
                 >
                   <BarChart3 className="h-5 w-5 mr-2 group-hover:scale-110 transition-transform" />
                   DDM Analysis
+                  {!user && <span className="ml-2 text-xs">(Login Required)</span>}
                 </Button>
               </div>
               
@@ -898,7 +933,7 @@ export default function HomePage() {
       </section>
 
       {/* Enhanced Footer */}
-      <footer className="glass py-16 px-4 border-t border-white/10">
+  <footer className="glass py-16 px-4 border-t border-white/10 text-gray-800 dark:text-gray-200">
         <div className="container mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
             <div className="space-y-4">
@@ -907,21 +942,21 @@ export default function HomePage() {
                   <Satellite className="h-6 w-6 text-primary animate-float glow-cyan" />
                   <Waves className="h-5 w-5 text-secondary animate-float glow-purple" />
                 </div>
-                <span className="text-lg font-semibold text-gradient-cyan">GNSS-R Web Tool</span>
+                <span className="text-lg font-semibold text-gray-900 dark:text-gray-100">GNSS-R Web Tool</span>
               </div>
-              <p className="text-sm text-muted-foreground leading-relaxed">
+              <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
                 Advanced GNSS-R data visualization and analysis platform for researchers worldwide.
               </p>
             </div>
 
             <div className="space-y-4">
-              <h4 className="font-semibold text-primary">Resources</h4>
+              <h4 className="font-semibold text-gray-900 dark:text-gray-100">Resources</h4>
               <div className="space-y-2">
                 {["Documentation", "API Reference", "Tutorials", "Examples"].map((item) => (
                   <a
                     key={item}
                     href="#"
-                    className="block text-sm text-muted-foreground hover:text-primary transition-colors duration-300"
+                    className="block text-sm text-gray-700 dark:text-gray-300 hover:text-primary transition-colors duration-300"
                   >
                     {item}
                   </a>
@@ -930,13 +965,13 @@ export default function HomePage() {
             </div>
 
             <div className="space-y-4">
-              <h4 className="font-semibold text-secondary">Community</h4>
+              <h4 className="font-semibold text-gray-900 dark:text-gray-100">Community</h4>
               <div className="space-y-2">
                 {["GitHub", "Research Papers", "Webinars", "Support"].map((item) => (
                   <a
                     key={item}
                     href="#"
-                    className="block text-sm text-muted-foreground hover:text-secondary transition-colors duration-300"
+                    className="block text-sm text-gray-700 dark:text-gray-300 hover:text-secondary transition-colors duration-300"
                   >
                     {item}
                   </a>
@@ -945,7 +980,7 @@ export default function HomePage() {
             </div>
 
             <div className="space-y-4">
-              <h4 className="font-semibold text-primary">Connect</h4>
+              <h4 className="font-semibold text-gray-900 dark:text-gray-100">Connect</h4>
               <div className="flex space-x-4">
                 {[
                   { icon: Github, label: "GitHub" },
@@ -957,7 +992,7 @@ export default function HomePage() {
                     <a
                       key={social.label}
                       href="#"
-                      className="w-10 h-10 rounded-lg glass hover:glow-cyan flex items-center justify-center transition-all duration-300 hover:scale-110"
+                      className="w-10 h-10 rounded-lg glass hover:glow-cyan flex items-center justify-center transition-all duration-300 hover:scale-110 text-gray-700 dark:text-gray-200"
                       aria-label={social.label}
                     >
                       <Icon className="h-5 w-5" />
@@ -969,14 +1004,14 @@ export default function HomePage() {
           </div>
 
           <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/10">
-            <div className="flex flex-wrap justify-center md:justify-start gap-6 text-sm mb-4 md:mb-0">
+            <div className="flex flex-wrap justify-center md:justify-start gap-6 text-sm mb-4 md:mb-0 text-gray-700 dark:text-gray-300">
               {["Contact", "Privacy Policy", "Terms of Service", "API"].map((item) => (
-                <a key={item} href="#" className="text-muted-foreground hover:text-primary transition-colors duration-300">
+        <a key={item} href="#" className="hover:text-primary transition-colors duration-300">
                   {item}
                 </a>
               ))}
             </div>
-            <div className="text-sm text-muted-foreground">© 2025 GNSS-R Web Tool. All rights reserved.</div>
+      <div className="text-sm text-gray-600 dark:text-gray-400">© 2025 GNSS-R Web Tool. All rights reserved.</div>
           </div>
         </div>
       </footer>
