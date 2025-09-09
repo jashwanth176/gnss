@@ -26,3 +26,17 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .vercel
+
+# Large CYGNSS data files (>1GB total)
+data/
+*.nc
+
+# Python virtual environment
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# Large media files
+*.mp4

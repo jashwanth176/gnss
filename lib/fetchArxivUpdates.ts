@@ -24,7 +24,7 @@ export async function fetchLatestUpdates(): Promise<UpdateItem[]> {
 			description:
 				"Latest CYGNSS observations are available with enhanced calibration and quality flags for improved ocean studies.",
 			action: "Access Data",
-			link: "https://www.nasa.gov/mission/cygnss/",
+			link: "https://science.nasa.gov/mission/cygnss/",
 			imageUrl:
 				"https://images.unsplash.com/photo-1457369804613-52c61a468e7d?q=80&w=1200&auto=format&fit=crop", // satellite/space
 			color: "blue",
@@ -37,9 +37,9 @@ export async function fetchLatestUpdates(): Promise<UpdateItem[]> {
 			description:
 				"A new study demonstrates improved soil moisture retrieval using multi-constellation GNSS-R and transformer models.",
 			action: "Read Paper",
-			link: "https://arxiv.org/",
-			imageUrl:
-				"https://images.unsplash.com/photo-1509096242439-7b9859fd34aa?q=80&w=1200&auto=format&fit=crop", // agriculture/soil
+			link: "https://arxiv.org/abs/2412.00072",
+				imageUrl:
+					"https://picsum.photos/seed/gnss-soil-ml/1200/800", // reliable placeholder image
 			color: "green",
 		},
 		{
@@ -50,7 +50,7 @@ export async function fetchLatestUpdates(): Promise<UpdateItem[]> {
 			description:
 				"Join our webinar covering practical GNSS-R workflows for soil moisture mapping and validation techniques.",
 			action: "Register Now",
-			link: "https://example.com/webinar",
+			link: "https://www.earthdata.nasa.gov/learn/webinars",
 			imageUrl:
 				"https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=1200&auto=format&fit=crop", // nature/fields
 			color: "purple",
