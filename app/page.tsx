@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
+import React from 'react'
 import {
   Satellite,
   Map,
@@ -334,30 +335,8 @@ export default function HomePage() {
         ref={heroRef}
         className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20"
       >
-        {/* Video Background */}
-        <video
-          ref={videoRef}
-          autoPlay
-            // Attempt to start playback ASAP; some mobile browsers still require user gesture.
-          loop
-          muted
-          playsInline
-          preload="auto"
-          className="absolute inset-0 w-full h-full object-cover opacity-35 filter blur-sm pointer-events-none select-none"
-          src="/854518-hd_1920_1080_30fps.mp4"
-          onLoadedData={() => console.log('Background video loaded')}
-          onError={(e) => {
-            console.warn('Background video failed to load', e)
-            if (videoRef.current) {
-              videoRef.current.style.display = 'none'
-            }
-          }}
-        >
-          {/* Fallback text (won't normally show) */}
-          Your browser does not support the background video.
-        </video>
-        {/* Fallback gradient overlay shown if video fails (hidden when video visible) */}
-        <div id="video-fallback-bg" className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(33,150,243,0.25),transparent),radial-gradient(circle_at_70%_60%,rgba(156,39,176,0.18),transparent)]" />
+  {/* Video Background */}
+  <VideoBackground />
 
         {/* Enhanced Parallax Background Elements */}
         <div
@@ -1025,5 +1004,56 @@ export default function HomePage() {
         </div>
       </footer>
     </div>
+  )
+}
+
+// Lightweight client-side background video with robust autoplay and fallback handling
+function VideoBackground() {
+  const videoRefLocal = React.useRef<HTMLVideoElement | null>(null)
+  React.useEffect(() => {
+    const v = videoRefLocal.current
+    if (!v) return
+    // Ensure muted + playsinline for autoplay policies
+    v.muted = true
+    v.playsInline = true
+    const fallback = document.getElementById('video-fallback-bg')
+
+    const onCanPlay = () => {
+      // Hide fallback when ready
+      if (fallback) fallback.style.opacity = '0'
+      v.play().catch(() => {
+        // If autoplay still blocked, keep fallback visible and hide video
+        v.style.display = 'none'
+        if (fallback) fallback.style.opacity = '1'
+      })
+    }
+    const onError = () => {
+      v.style.display = 'none'
+      if (fallback) fallback.style.opacity = '1'
+    }
+    v.addEventListener('canplay', onCanPlay)
+    v.addEventListener('error', onError)
+    return () => {
+      v.removeEventListener('canplay', onCanPlay)
+      v.removeEventListener('error', onError)
+    }
+  }, [])
+
+  return (
+    <>
+      <video
+        ref={videoRefLocal}
+        autoPlay
+        playsInline
+        muted
+        loop
+        preload="metadata"
+        className="absolute inset-0 w-full h-full object-cover opacity-35 filter blur-sm pointer-events-none select-none"
+      >
+        <source src="/854518-hd_1920_1080_30fps.mp4" type="video/mp4" />
+      </video>
+      {/* Fallback gradient under the video; opacity toggled when video can play */}
+      <div id="video-fallback-bg" className="absolute inset-0 transition-opacity duration-500 bg-[radial-gradient(circle_at_30%_20%,rgba(33,150,243,0.25),transparent),radial-gradient(circle_at_70%_60%,rgba(156,39,176,0.18),transparent)]" />
+    </>
   )
 }
