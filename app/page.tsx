@@ -32,7 +32,6 @@ import {
   Target,
   Database,
 } from "lucide-react"
-import { ThemeToggle } from "@/components/theme-toggle"
 import { AuthModal } from "@/components/AuthModal"
 import { UserMenu } from "@/components/UserMenu"
 import { useAuth } from "@/contexts/AuthContext"
@@ -237,7 +236,7 @@ export default function HomePage() {
             
             {/* Title */}
             <div className="hidden sm:block">
-              <span className="text-2xl font-bold text-gray-900 dark:text-gray-100 tracking-wide">
+              <span className="text-2xl font-bold text-black tracking-wide">
                 GNSS-R Portal
               </span>
             </div>
@@ -248,7 +247,7 @@ export default function HomePage() {
               <button
                 key={item}
                 onClick={() => scrollToSection(item)}
-        className="text-sm font-semibold text-gray-900 dark:text-gray-200 hover:text-primary transition-colors duration-200 relative group"
+        className="text-sm font-semibold text-black transition-colors duration-200 relative group"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 {item}
@@ -258,7 +257,6 @@ export default function HomePage() {
           </nav>
 
           <div className="flex items-center space-x-4">
-            <ThemeToggle />
             <div className="hidden sm:flex items-center space-x-2">
               {loading ? (
                 <div className="h-8 w-20 animate-pulse bg-muted rounded" />
@@ -340,12 +338,26 @@ export default function HomePage() {
         <video
           ref={videoRef}
           autoPlay
+            // Attempt to start playback ASAP; some mobile browsers still require user gesture.
           loop
           muted
           playsInline
-          className="absolute inset-0 w-full h-full object-cover opacity-20 filter blur-sm"
+          preload="auto"
+          className="absolute inset-0 w-full h-full object-cover opacity-35 filter blur-sm pointer-events-none select-none"
           src="/854518-hd_1920_1080_30fps.mp4"
-        />
+          onLoadedData={() => console.log('Background video loaded')}
+          onError={(e) => {
+            console.warn('Background video failed to load', e)
+            if (videoRef.current) {
+              videoRef.current.style.display = 'none'
+            }
+          }}
+        >
+          {/* Fallback text (won't normally show) */}
+          Your browser does not support the background video.
+        </video>
+        {/* Fallback gradient overlay shown if video fails (hidden when video visible) */}
+        <div id="video-fallback-bg" className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(33,150,243,0.25),transparent),radial-gradient(circle_at_70%_60%,rgba(156,39,176,0.18),transparent)]" />
 
         {/* Enhanced Parallax Background Elements */}
         <div
@@ -554,9 +566,6 @@ export default function HomePage() {
                           title="Interactive GNSS-R Map"
                           loading="lazy"
                         />
-                        <div className="absolute top-4 right-4 bg-background/80 backdrop-blur-sm rounded-lg p-2">
-                          <p className="text-xs text-muted-foreground">Interactive GNSS-R Portal</p>
-                        </div>
                       </div>
                     </TabsContent>
                     
@@ -659,7 +668,7 @@ export default function HomePage() {
                   <TabsTrigger
                     key={useCase.id}
                     value={useCase.id}
-                    className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-secondary data-[state=active]:text-white transition-all duration-300 hover:scale-105"
+                    className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-secondary data-[state=active]:text-primary-foreground transition-all duration-300 hover:scale-105"
                   >
                     <Icon className="h-4 w-4" />
                     <span className="hidden sm:inline">{useCase.title}</span>
@@ -699,7 +708,7 @@ export default function HomePage() {
                           </div>
 
                           <div className="flex flex-wrap gap-3 pt-4">
-                            <Button className="group bg-gradient-to-r from-primary to-secondary text-white hover:scale-105 transition-all duration-300 glow-cyan">
+                            <Button className="group bg-gradient-to-r from-primary to-secondary text-primary-foreground hover:scale-105 transition-all duration-300 glow-cyan">
                               Launch Analysis Tool
                               <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
                             </Button>
@@ -789,7 +798,7 @@ export default function HomePage() {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                   <div className="space-y-6">
                     <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-secondary text-white flex items-center justify-center font-bold text-xl glow-cyan"> 
+                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-secondary text-primary-foreground flex items-center justify-center font-bold text-xl glow-cyan"> 
                         {activeStep + 1}
                       </div>
                       <h3 className="text-2xl font-bold text-gradient-cyan">{steps[activeStep].title}</h3>
@@ -933,7 +942,7 @@ export default function HomePage() {
       </section>
 
       {/* Enhanced Footer */}
-  <footer className="glass py-16 px-4 border-t border-white/10 text-gray-800 dark:text-gray-200">
+  <footer className="glass py-16 px-4 border-t border-white/10 text-gray-800">
         <div className="container mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
             <div className="space-y-4">
@@ -942,21 +951,21 @@ export default function HomePage() {
                   <Satellite className="h-6 w-6 text-primary animate-float glow-cyan" />
                   <Waves className="h-5 w-5 text-secondary animate-float glow-purple" />
                 </div>
-                <span className="text-lg font-semibold text-gray-900 dark:text-gray-100">GNSS-R Web Tool</span>
+                <span className="text-lg font-semibold text-gray-900">GNSS-R Web Tool</span>
               </div>
-              <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+              <p className="text-sm text-gray-700 leading-relaxed">
                 Advanced GNSS-R data visualization and analysis platform for researchers worldwide.
               </p>
             </div>
 
             <div className="space-y-4">
-              <h4 className="font-semibold text-gray-900 dark:text-gray-100">Resources</h4>
+              <h4 className="font-semibold text-gray-900">Resources</h4>
               <div className="space-y-2">
                 {["Documentation", "API Reference", "Tutorials", "Examples"].map((item) => (
                   <a
                     key={item}
                     href="#"
-                    className="block text-sm text-gray-700 dark:text-gray-300 hover:text-primary transition-colors duration-300"
+                    className="block text-sm text-gray-700 hover:text-primary transition-colors duration-300"
                   >
                     {item}
                   </a>
@@ -965,13 +974,13 @@ export default function HomePage() {
             </div>
 
             <div className="space-y-4">
-              <h4 className="font-semibold text-gray-900 dark:text-gray-100">Community</h4>
+              <h4 className="font-semibold text-gray-900">Community</h4>
               <div className="space-y-2">
                 {["GitHub", "Research Papers", "Webinars", "Support"].map((item) => (
                   <a
                     key={item}
                     href="#"
-                    className="block text-sm text-gray-700 dark:text-gray-300 hover:text-secondary transition-colors duration-300"
+                    className="block text-sm text-gray-700 hover:text-secondary transition-colors duration-300"
                   >
                     {item}
                   </a>
@@ -980,7 +989,7 @@ export default function HomePage() {
             </div>
 
             <div className="space-y-4">
-              <h4 className="font-semibold text-gray-900 dark:text-gray-100">Connect</h4>
+              <h4 className="font-semibold text-gray-900">Connect</h4>
               <div className="flex space-x-4">
                 {[
                   { icon: Github, label: "GitHub" },
@@ -992,7 +1001,7 @@ export default function HomePage() {
                     <a
                       key={social.label}
                       href="#"
-                      className="w-10 h-10 rounded-lg glass hover:glow-cyan flex items-center justify-center transition-all duration-300 hover:scale-110 text-gray-700 dark:text-gray-200"
+                      className="w-10 h-10 rounded-lg glass hover:glow-cyan flex items-center justify-center transition-all duration-300 hover:scale-110 text-gray-700"
                       aria-label={social.label}
                     >
                       <Icon className="h-5 w-5" />
@@ -1004,14 +1013,14 @@ export default function HomePage() {
           </div>
 
           <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/10">
-            <div className="flex flex-wrap justify-center md:justify-start gap-6 text-sm mb-4 md:mb-0 text-gray-700 dark:text-gray-300">
+            <div className="flex flex-wrap justify-center md:justify-start gap-6 text-sm mb-4 md:mb-0 text-gray-700">
               {["Contact", "Privacy Policy", "Terms of Service", "API"].map((item) => (
         <a key={item} href="#" className="hover:text-primary transition-colors duration-300">
                   {item}
                 </a>
               ))}
             </div>
-      <div className="text-sm text-gray-600 dark:text-gray-400">© 2025 GNSS-R Web Tool. All rights reserved.</div>
+  <div className="text-sm text-gray-600">© 2025 GNSS-R Web Tool. All rights reserved.</div>
           </div>
         </div>
       </footer>

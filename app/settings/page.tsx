@@ -7,7 +7,6 @@ import { Switch } from '@/components/ui/switch'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
 import { ArrowLeft, Palette, Bell, Shield, Download, Trash2 } from 'lucide-react'
-import { ThemeToggle } from '@/components/theme-toggle'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
@@ -101,7 +100,7 @@ export default function SettingsPage() {
                   height={60}
                   className="rounded-md shadow-lg hover:shadow-xl transition-all duration-300"
                 />
-                <h1 className="text-3xl font-bold">Settings</h1>
+                <h1 className="text-3xl font-bold text-black">Settings</h1>
               </div>
             </div>
           </div>
@@ -119,15 +118,7 @@ export default function SettingsPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div className="space-y-1">
-                    <Label>Theme</Label>
-                    <p className="text-sm text-muted-foreground">
-                      Switch between light and dark mode
-                    </p>
-                  </div>
-                  <ThemeToggle />
-                </div>
+                {/* Theme settings removed - fixed brand theme applied sitewide */}
               </CardContent>
             </Card>
 

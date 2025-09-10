@@ -4,59 +4,39 @@
 
 @layer base {
   :root {
-    /* Light mode - Professional Blue & White Theme */
-    --primary: 210 100% 55%;
-    --secondary: 250 85% 65%;
-    --background: 210 20% 98%;
-    --foreground: 210 40% 15%;
-    --card: 0 0% 100%;
-    --card-foreground: 210 40% 15%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 210 40% 15%;
-    --primary-foreground: 0 0% 98%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 210 20% 95%;
-    --muted-foreground: 210 15% 45%;
-    --accent: 210 30% 92%;
-    --accent-foreground: 210 40% 15%;
-    --destructive: 0 84% 55%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 210 25% 88%;
-    --input: 210 25% 92%;
-    --ring: 210 100% 55%;
-    --radius: 1rem;
-    --chart-1: 210 100% 55%;
-    --chart-2: 250 85% 65%;
-    --chart-3: 280 90% 60%;
-    --chart-4: 47 95% 58%;
-    --chart-5: 16 95% 58%;
-  }
+    /* Fixed Brand Theme: Light Tan & Dark Red */
+    --brand-tan: 43 42% 90%; /* #F2ECDD */
+    --brand-red: 349 68% 31%; /* #84192B */
 
-  .dark {
-    --background: 220 27% 3%;
-    --foreground: 220 13% 97%;
-    --card: 220 23% 6%;
-    --card-foreground: 220 13% 97%;
-    --popover: 220 23% 6%;
-    --popover-foreground: 220 13% 97%;
-    --primary: 193 100% 65%;
-    --primary-foreground: 220 27% 3%;
-    --secondary: 271 100% 75%;
-    --secondary-foreground: 220 27% 3%;
-    --muted: 220 23% 10%;
-    --muted-foreground: 220 9% 70%;
-    --accent: 220 23% 10%;
-    --accent-foreground: 220 13% 97%;
-    --destructive: 0 62.8% 65%;
-    --destructive-foreground: 220 13% 97%;
-    --border: 220 20% 12%;
-    --input: 220 20% 12%;
-    --ring: 193 100% 65%;
-    --chart-1: 193 100% 65%;
-    --chart-2: 271 100% 75%;
-    --chart-3: 299 100% 70%;
-    --chart-4: 47 100% 68%;
-    --chart-5: 16 100% 68%;
+    --background: var(--brand-tan);
+    --foreground: 0 0% 6%; /* near-black for readability */
+    --card: var(--brand-tan);
+    --card-foreground: 0 0% 6%;
+    --popover: var(--brand-tan);
+    --popover-foreground: 0 0% 6%;
+
+    --primary: var(--brand-red);
+    --primary-foreground: 0 0% 98%;
+    --secondary: 43 42% 85%; /* slightly darker tan for sections */
+    --secondary-foreground: 0 0% 6%;
+
+    --muted: 43 42% 84%;
+    --muted-foreground: 0 0% 26%;
+    --accent: 43 42% 82%;
+    --accent-foreground: 0 0% 6%;
+    --destructive: 0 72% 45%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 43 25% 70%;
+    --input: 43 25% 88%;
+    --ring: var(--brand-red);
+    --radius: 1rem;
+
+    /* Charts use brand-friendly tones */
+    --chart-1: 349 68% 31%;
+    --chart-2: 43 42% 55%;
+    --chart-3: 0 54% 45%;
+    --chart-4: 18 60% 45%;
+    --chart-5: 210 30% 30%;
   }
 }
 
@@ -66,12 +46,12 @@
   }
   body {
     @apply bg-background text-foreground font-medium;
-    /* Light mode - Professional gradient background */
-    background: 
-      radial-gradient(ellipse at top, rgba(33, 150, 243, 0.06) 0%, transparent 50%),
-      radial-gradient(ellipse at bottom left, rgba(156, 39, 176, 0.04) 0%, transparent 50%),
-      radial-gradient(ellipse at bottom right, rgba(63, 81, 181, 0.04) 0%, transparent 50%),
-      linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    /* Brand background: subtle tan with soft vignette */
+    background:
+      radial-gradient(ellipse at top, rgba(132, 25, 43, 0.05) 0%, transparent 55%),
+      radial-gradient(ellipse at bottom left, rgba(132, 25, 43, 0.04) 0%, transparent 50%),
+      radial-gradient(ellipse at bottom right, rgba(132, 25, 43, 0.04) 0%, transparent 50%),
+      hsl(var(--background));
     /* Hide scrollbars */
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* Internet Explorer 10+ */
@@ -92,13 +72,7 @@
     -ms-overflow-style: none;
   }
   
-  /* Dark mode background */
-  .dark body {
-    background: radial-gradient(ellipse at top, rgba(0, 255, 255, 0.03) 0%, transparent 60%),
-                radial-gradient(ellipse at bottom left, rgba(139, 69, 255, 0.02) 0%, transparent 50%),
-                radial-gradient(ellipse at bottom right, rgba(0, 191, 255, 0.02) 0%, transparent 50%),
-                hsl(var(--background));
-  }
+  /* Remove dark mode support; fixed brand theme */
   
   html {
     scroll-behavior: smooth;
@@ -106,47 +80,26 @@
 }
 
 @layer utilities {
-  /* Light mode glass effects - Professional and elegant */
+  /* Brand glass effects - Professional and elegant */
   .glass {
-    background: rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(24px);
-    border: 1px solid rgba(33, 150, 243, 0.15);
-    box-shadow: 0 8px 32px rgba(33, 150, 243, 0.08);
-  }
-  
-  .dark .glass {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(132, 25, 43, 0.15);
+    box-shadow: 0 8px 32px rgba(132, 25, 43, 0.08);
   }
   
   .glass-card {
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.92);
     backdrop-filter: blur(20px);
-    border: 1px solid rgba(33, 150, 243, 0.12);
-    box-shadow: 0 12px 40px rgba(33, 150, 243, 0.06), 0 4px 16px rgba(0, 0, 0, 0.02);
-  }
-  
-  .dark .glass-card {
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(132, 25, 43, 0.12);
+    box-shadow: 0 12px 40px rgba(132, 25, 43, 0.06), 0 4px 16px rgba(0, 0, 0, 0.02);
   }
   
   .glass-header {
     background: rgba(242, 236, 221, 0.85);
     backdrop-filter: blur(32px);
-    border-bottom: 1px solid rgba(33, 150, 243, 0.15);
-    box-shadow: 0 4px 24px rgba(33, 150, 243, 0.06);
-  }
-  
-  .dark .glass-header {
-    background: rgba(242, 236, 221, 0.85);
-    backdrop-filter: blur(24px);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+    border-bottom: 1px solid rgba(132, 25, 43, 0.15);
+    box-shadow: 0 4px 24px rgba(132, 25, 43, 0.06);
   }
 
   .animate-fade-in {
@@ -168,18 +121,7 @@
     background: linear-gradient(
       90deg,
       transparent 0%,
-      rgba(33, 150, 243, 0.6) 50%,
-      transparent 100%
-    );
-    background-size: 200% 100%;
-    animation: shimmer 3s infinite;
-  }
-  
-  .dark .animate-text-shimmer {
-    background: linear-gradient(
-      90deg,
-      transparent 0%,
-      rgba(255, 255, 255, 0.4) 50%,
+      rgba(132, 25, 43, 0.45) 50%,
       transparent 100%
     );
     background-size: 200% 100%;
@@ -187,44 +129,22 @@
   }
   
   .glow-cyan {
-    box-shadow: 0 0 25px rgba(33, 150, 243, 0.25), 0 0 50px rgba(33, 150, 243, 0.1);
-  }
-  
-  .dark .glow-cyan {
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3), 0 0 40px rgba(0, 255, 255, 0.1);
+    box-shadow: 0 0 25px rgba(132, 25, 43, 0.25), 0 0 50px rgba(132, 25, 43, 0.08);
   }
   
   .glow-purple {
-    box-shadow: 0 0 25px rgba(156, 39, 176, 0.25), 0 0 50px rgba(156, 39, 176, 0.1);
-  }
-  
-  .dark .glow-purple {
-    box-shadow: 0 0 20px rgba(139, 69, 255, 0.3), 0 0 40px rgba(139, 69, 255, 0.1);
+    box-shadow: 0 0 25px rgba(132, 25, 43, 0.25), 0 0 50px rgba(132, 25, 43, 0.08);
   }
   
   .text-gradient-cyan {
-    background: linear-gradient(45deg, #1976d2, #42a5f5);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  
-  .dark .text-gradient-cyan {
-    background: linear-gradient(45deg, #00ffff, #0099ff);
+    background: linear-gradient(45deg, #84192B, #A4273C);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
   
   .text-gradient-purple {
-    background: linear-gradient(45deg, #7b1fa2, #9c27b0);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  
-  .dark .text-gradient-purple {
-    background: linear-gradient(45deg, #8b45ff, #ff45ff);
+    background: linear-gradient(45deg, #84192B, #B84556);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;

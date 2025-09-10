@@ -292,8 +292,8 @@ export default function SoilMoistureEstimatorPage() {
                   className="rounded-md shadow-lg hover:shadow-xl transition-all duration-300"
                 />
                 <div>
-                  <h1 className="text-2xl font-bold text-gradient-purple">AI Soil Moisture Estimator</h1>
-                  <p className="text-sm text-muted-foreground">GNSS-R powered precision agriculture</p>
+                  <h1 className="text-2xl font-bold text-black">AI Soil Moisture Estimator</h1>
+                  <p className="text-sm text-black">GNSS-R powered precision agriculture</p>
                 </div>
               </div>
             </div>

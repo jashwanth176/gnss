@@ -83,7 +83,7 @@ export default function ProfilePage() {
                   height={60}
                   className="rounded-md shadow-lg hover:shadow-xl transition-all duration-300"
                 />
-                <h1 className="text-3xl font-bold">Profile</h1>
+                <h1 className="text-3xl font-bold text-black">Profile</h1>
               </div>
             </div>
           </div>

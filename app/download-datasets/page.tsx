@@ -262,8 +262,8 @@ export default function DownloadDatasetPage() {
                   className="rounded-md shadow-lg hover:shadow-xl transition-all duration-300"
                 />
                 <div>
-                  <h1 className="text-2xl font-bold text-gradient-cyan">Sample Datasets</h1>
-                  <p className="text-sm text-muted-foreground">High-quality GNSS-R research datasets</p>
+                  <h1 className="text-2xl font-bold text-black">Sample Datasets</h1>
+                  <p className="text-sm text-black">High-quality GNSS-R research datasets</p>
                 </div>
               </div>
             </div>

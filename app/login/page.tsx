@@ -131,7 +131,7 @@ export default function LoginPage() {
             <div className="space-y-6">
               {/* Main Logo */}
               <div className="flex justify-center lg:justify-start">
-                <div className="p-4 bg-white/95 dark:bg-gray-900/95 rounded-2xl shadow-2xl backdrop-blur-md border border-white/30 dark:border-gray-600/50 hover:shadow-3xl transition-all duration-300">
+                <div className="p-4 bg-white/95 rounded-2xl shadow-2xl backdrop-blur-md border border-white/30 hover:shadow-3xl transition-all duration-300">
                   <Image
                     src="/Logo.png"
                     alt="GNSS-R Portal Logo"
@@ -152,8 +152,8 @@ export default function LoginPage() {
               </div>
 
               {/* IIT Tirupati Logo */}
-              <div className="flex items-center justify-center lg:justify-start space-x-4 p-4 bg-white/95 dark:bg-gray-900/95 rounded-xl shadow-xl backdrop-blur-md border border-white/30 dark:border-gray-600/50 hover:shadow-2xl transition-all duration-300">
-                <div className="p-2 bg-white/90 dark:bg-gray-800/90 rounded-lg shadow-lg">
+              <div className="flex items-center justify-center lg:justify-start space-x-4 p-4 bg-white/95 rounded-xl shadow-xl backdrop-blur-md border border-white/30 hover:shadow-2xl transition-all duration-300">
+                <div className="p-2 bg-white/90 rounded-lg shadow-lg">
                   <Image
                     src="/IIT_Tirupati_logo.svg"
                     alt="IIT Tirupati"
