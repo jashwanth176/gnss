@@ -1,8 +1,9 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
-import { useAuth } from "@/contexts/AuthContext"
+// Auth not required for this tool now
+// import { useRouter } from "next/navigation"
+// import { useAuth } from "@/contexts/AuthContext"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -36,7 +37,6 @@ import Image from "next/image"
 interface WeatherData {
   temperature: number
   humidity: number
-  pressure: number
   windSpeed: number
   precipitation: number
   cloudCover: number
@@ -44,38 +44,34 @@ interface WeatherData {
 
 interface SoilMoistureResult {
   moisturePercent: number
+  subsoilPercent?: number
   confidence: number
   classification: string
-  gnssrSnr: number
   recommendations: string[]
 }
 
-// Simulated AI model for soil moisture estimation
+// Estimation using real soil moisture from Open-Meteo with light heuristics
 const estimateSoilMoisture = async (
   weatherData: WeatherData,
   location: string,
-  gnssrData: { snr: number; elevation: number; surfaceRoughness: number }
+  soil: { surface: number; subsoil?: number }
 ): Promise<SoilMoistureResult> => {
-  // Simulate API delay
-  await new Promise(resolve => setTimeout(resolve, 2000))
-  
-  // AI model simulation based on multiple factors
-  const baselineMoisture = weatherData.humidity * 0.4 + weatherData.precipitation * 2
-  const temperatureEffect = Math.max(0, 40 - weatherData.temperature) * 0.5
-  const gnssrEffect = (gnssrData.snr - 20) * 1.2 + gnssrData.surfaceRoughness * 10
-  
-  let moisturePercent = Math.min(100, Math.max(0, 
-    baselineMoisture + temperatureEffect + gnssrEffect + (Math.random() - 0.5) * 10
-  ))
-  
-  // Adjust for seasonal/regional factors
-  if (location.includes('desert') || location.includes('arid')) {
-    moisturePercent *= 0.6
-  } else if (location.includes('tropical') || location.includes('rainforest')) {
-    moisturePercent = Math.min(100, moisturePercent * 1.3)
-  }
-  
-  const confidence = Math.min(95, 70 + (gnssrData.snr - 15) * 2 + Math.random() * 15)
+  // Short processing delay for UX
+  await new Promise(resolve => setTimeout(resolve, 300))
+
+  // Open-Meteo soil moisture is volumetric [m³/m³] ~ 0..1; convert to %
+  const surfacePct = Math.max(0, Math.min(100, soil.surface * 100))
+  const subsoilPct = soil.subsoil !== undefined ? Math.max(0, Math.min(100, soil.subsoil * 100)) : undefined
+
+  // Adjust slightly with recent precipitation and humidity
+  const boost = Math.min(10, weatherData.precipitation * 1.5) + Math.min(5, (weatherData.humidity - 60) * 0.1)
+  let moisturePercent = Math.max(0, Math.min(100, surfacePct + boost))
+
+  // Confidence: better if both soil layers present and recent precip
+  let confidence = 65
+  if (subsoilPct !== undefined) confidence += 10
+  if (weatherData.precipitation > 2) confidence += 5
+  confidence = Math.max(50, Math.min(95, confidence))
   
   let classification = 'Moderate'
   let recommendations: string[] = []
@@ -121,84 +117,94 @@ const estimateSoilMoisture = async (
     moisturePercent: Math.round(moisturePercent * 10) / 10,
     confidence: Math.round(confidence * 10) / 10,
     classification,
-    gnssrSnr: gnssrData.snr,
     recommendations
   }
 }
 
-// Simulated weather API data
-const getWeatherData = async (location: string): Promise<WeatherData> => {
-  await new Promise(resolve => setTimeout(resolve, 1000))
-  
-  // Simulate realistic weather data for different locations
-  const weatherProfiles: Record<string, Partial<WeatherData>> = {
-    'New Delhi, India': { temperature: 32, humidity: 65, pressure: 1013, windSpeed: 12, precipitation: 2, cloudCover: 40 },
-    'Punjab, India': { temperature: 28, humidity: 70, pressure: 1015, windSpeed: 8, precipitation: 15, cloudCover: 60 },
-    'California, USA': { temperature: 24, humidity: 55, pressure: 1018, windSpeed: 15, precipitation: 0, cloudCover: 20 },
-    'Queensland, Australia': { temperature: 29, humidity: 75, pressure: 1012, windSpeed: 18, precipitation: 8, cloudCover: 55 },
-    'Sahara, Africa': { temperature: 42, humidity: 15, pressure: 1008, windSpeed: 25, precipitation: 0, cloudCover: 5 }
-  }
-  
-  const profile = weatherProfiles[location] || weatherProfiles['New Delhi, India']
-  
-  return {
-    temperature: profile.temperature! + (Math.random() - 0.5) * 6,
-    humidity: profile.humidity! + (Math.random() - 0.5) * 20,
-    pressure: profile.pressure! + (Math.random() - 0.5) * 10,
-    windSpeed: profile.windSpeed! + (Math.random() - 0.5) * 8,
-    precipitation: Math.max(0, profile.precipitation! + (Math.random() - 0.5) * 10),
-    cloudCover: Math.max(0, Math.min(100, profile.cloudCover! + (Math.random() - 0.5) * 30))
-  }
+// Free real-time data from Open-Meteo (no API key)
+const fetchOpenMeteo = async (lat: number, lon: number) => {
+  const params = new URLSearchParams({
+    latitude: String(lat),
+    longitude: String(lon),
+    hourly: [
+      'soil_moisture_0_to_7cm',
+      'soil_moisture_7_to_28cm',
+      'precipitation',
+      'temperature_2m',
+      'relative_humidity_2m',
+      'cloudcover',
+      'wind_speed_10m'
+    ].join(','),
+    past_days: '1',
+    forecast_days: '1',
+    timezone: 'auto'
+  })
+  const url = `https://api.open-meteo.com/v1/forecast?${params.toString()}`
+  const res = await fetch(url)
+  if (!res.ok) throw new Error(`Open-Meteo HTTP ${res.status}`)
+  return res.json()
 }
 
 export default function SoilMoistureEstimatorPage() {
-  const { user, loading } = useAuth()
-  const router = useRouter()
-  
-  // Redirect to login if not authenticated
-  useEffect(() => {
-    if (!loading && !user) {
-      router.push('/login')
-    }
-  }, [user, loading, router])
-
-  // Show loading while checking auth
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-background to-muted flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary mx-auto"></div>
-          <p className="mt-4 text-muted-foreground">Loading...</p>
-        </div>
-      </div>
-    )
-  }
-
-  // Don't render if not authenticated
-  if (!user) {
-    return null
-  }
+  // Estimator is open to all users (no auth gating)
   
   const [selectedLocation, setSelectedLocation] = useState("New Delhi, India")
-  const [customLocation, setCustomLocation] = useState("")
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null)
+  const [soilMoisture, setSoilMoisture] = useState<{ surface: number; subsoil?: number } | null>(null)
   const [soilResult, setSoilResult] = useState<SoilMoistureResult | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [weatherLoading, setWeatherLoading] = useState(false)
 
-  const locations = [
-    "New Delhi, India",
-    "Punjab, India", 
-    "California, USA",
-    "Queensland, Australia",
-    "Sahara, Africa"
+  const indiaLocations: { name: string; lat: number; lon: number }[] = [
+    { name: 'New Delhi, Delhi', lat: 28.6139, lon: 77.2090 },
+    { name: 'Mumbai, Maharashtra', lat: 19.0760, lon: 72.8777 },
+    { name: 'Bengaluru, Karnataka', lat: 12.9716, lon: 77.5946 },
+    { name: 'Chennai, Tamil Nadu', lat: 13.0827, lon: 80.2707 },
+    { name: 'Hyderabad, Telangana', lat: 17.3850, lon: 78.4867 },
+    { name: 'Kolkata, West Bengal', lat: 22.5726, lon: 88.3639 },
+    { name: 'Ahmedabad, Gujarat', lat: 23.0225, lon: 72.5714 },
+    { name: 'Jaipur, Rajasthan', lat: 26.9124, lon: 75.7873 },
+    { name: 'Lucknow, Uttar Pradesh', lat: 26.8467, lon: 80.9462 },
+    { name: 'Tirupati, Andhra Pradesh', lat: 13.6288, lon: 79.4192 }
   ]
 
   const loadWeatherData = async (location: string) => {
     setWeatherLoading(true)
     try {
-      const data = await getWeatherData(location)
-      setWeatherData(data)
+      const loc = indiaLocations.find(l => l.name === location) || indiaLocations[0]
+      const json = await fetchOpenMeteo(loc.lat, loc.lon)
+      const h = json.hourly
+      // Pick the hour closest to 'now' at local timezone
+      const offset = Number(json.utc_offset_seconds || 0)
+      const nowUTC = Date.now()
+      let idx = 0
+      for (let i = 0; i < h.time.length; i++) {
+        const tUTC = Date.parse(h.time[i] + 'Z') - offset * 1000
+        if (tUTC <= nowUTC) idx = i; else break
+      }
+      const wd: WeatherData = {
+        temperature: Number(h.temperature_2m[idx]),
+        humidity: Number(h.relative_humidity_2m[idx]),
+        windSpeed: Number(h.wind_speed_10m[idx]) / 3.6, // km/h -> m/s
+        precipitation: Number(h.precipitation[idx]),
+        cloudCover: Number(h.cloudcover[idx])
+      }
+      setWeatherData(wd)
+      // Soil moisture with fallback if null
+      const surfaceRaw = h.soil_moisture_0_to_7cm ? h.soil_moisture_0_to_7cm[idx] : null
+      const subsoilRaw = h.soil_moisture_7_to_28cm ? h.soil_moisture_7_to_28cm[idx] : null
+      let surface = surfaceRaw != null ? Number(surfaceRaw) : NaN
+      let subsoil = subsoilRaw != null ? Number(subsoilRaw) : undefined
+      if (!isFinite(surface)) {
+        // Proxy: use humidity and last 24h precip
+        const n = h.precipitation.length
+        const start = Math.max(0, n - 24)
+        const sumPrecip = h.precipitation.slice(start).reduce((a: number, b: number) => a + Number(b || 0), 0)
+        const proxy = Math.min(0.6, Math.max(0, 0.003 * wd.humidity + 0.02 * sumPrecip)) // ~0..0.6 m3/m3
+        surface = proxy
+        subsoil = subsoil && isFinite(subsoil) ? subsoil : Math.max(0, proxy - 0.05)
+      }
+      setSoilMoisture({ surface, subsoil })
     } catch (error) {
       console.error('Failed to load weather data:', error)
     } finally {
@@ -207,24 +213,13 @@ export default function SoilMoistureEstimatorPage() {
   }
 
   const runAnalysis = async () => {
-    if (!weatherData) return
+  if (!weatherData || !soilMoisture) return
     
     setIsLoading(true)
     setSoilResult(null)
     
     try {
-      // Simulate GNSS-R measurements
-      const gnssrData = {
-        snr: 20 + Math.random() * 15,
-        elevation: 30 + Math.random() * 40,
-        surfaceRoughness: Math.random() * 0.1
-      }
-      
-      const result = await estimateSoilMoisture(
-        weatherData,
-        customLocation || selectedLocation,
-        gnssrData
-      )
+  const result = await estimateSoilMoisture(weatherData, selectedLocation, soilMoisture)
       setSoilResult(result)
     } catch (error) {
       console.error('Analysis failed:', error)
@@ -297,15 +292,13 @@ export default function SoilMoistureEstimatorPage() {
                 </div>
               </div>
             </div>
-            <Badge variant="secondary" className="bg-green-500/20 text-green-700">
-              AI Powered
-            </Badge>
+            {/* Removed AI badge as per real-data only policy */}
           </div>
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="container mx-auto px-3 sm:px-4 py-6 sm:py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
           {/* Input Parameters */}
           <div className="lg:col-span-1 space-y-6">
             <Card className="glass-card">
@@ -318,7 +311,7 @@ export default function SoilMoistureEstimatorPage() {
                   Choose your field location for analysis
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-3 sm:space-y-4">
                 <div>
                   <Label htmlFor="location">Preset Locations</Label>
                   <Select value={selectedLocation} onValueChange={setSelectedLocation}>
@@ -326,24 +319,16 @@ export default function SoilMoistureEstimatorPage() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      {locations.map(location => (
-                        <SelectItem key={location} value={location}>
-                          {location}
+                      {indiaLocations.map(loc => (
+                        <SelectItem key={loc.name} value={loc.name}>
+                          {loc.name}
                         </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
                 </div>
                 
-                <div>
-                  <Label htmlFor="custom">Custom Location</Label>
-                  <Input
-                    id="custom"
-                    placeholder="Enter coordinates or address"
-                    value={customLocation}
-                    onChange={(e) => setCustomLocation(e.target.value)}
-                  />
-                </div>
+                {/* Custom location removed to ensure only supported locations are used */}
               </CardContent>
             </Card>
 
@@ -353,7 +338,10 @@ export default function SoilMoistureEstimatorPage() {
                 <CardTitle className="flex items-center">
                   {weatherData && (
                     <>
-                      {getWeatherIcon(weatherData)({ className: "h-5 w-5 mr-2" })}
+                      {(() => {
+                        const Icon = getWeatherIcon(weatherData)
+                        return <Icon className="h-5 w-5 mr-2" />
+                      })()}
                       Weather Conditions
                     </>
                   )}
@@ -365,19 +353,19 @@ export default function SoilMoistureEstimatorPage() {
                   )}
                 </CardTitle>
               </CardHeader>
-              <CardContent>
+        <CardContent>
                 {weatherLoading ? (
                   <div className="flex items-center justify-center py-8">
                     <Loader2 className="h-6 w-6 animate-spin mr-2" />
                     Loading weather data...
                   </div>
                 ) : weatherData ? (
-                  <div className="grid grid-cols-2 gap-4 text-sm">
+          <div className="grid grid-cols-2 sm:grid-cols-2 gap-3 sm:gap-4 text-sm">
                     <div className="flex items-center">
                       <Thermometer className="h-4 w-4 mr-2 text-red-500" />
                       <div>
                         <p className="text-muted-foreground">Temperature</p>
-                        <p className="font-semibold">{weatherData.temperature.toFixed(1)}°C</p>
+            <p className="font-semibold">{weatherData.temperature.toFixed(1)}°C</p>
                       </div>
                     </div>
                     <div className="flex items-center">
@@ -390,8 +378,8 @@ export default function SoilMoistureEstimatorPage() {
                     <div className="flex items-center">
                       <Wind className="h-4 w-4 mr-2 text-gray-500" />
                       <div>
-                        <p className="text-muted-foreground">Wind Speed</p>
-                        <p className="font-semibold">{weatherData.windSpeed.toFixed(1)} m/s</p>
+            <p className="text-muted-foreground">Wind Speed</p>
+            <p className="font-semibold">{weatherData.windSpeed.toFixed(1)} m/s</p>
                       </div>
                     </div>
                     <div className="flex items-center">
@@ -413,7 +401,7 @@ export default function SoilMoistureEstimatorPage() {
               <CardHeader>
                 <CardTitle className="flex items-center">
                   <Brain className="h-5 w-5 mr-2" />
-                  AI Analysis
+                  Estimation
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -431,7 +419,7 @@ export default function SoilMoistureEstimatorPage() {
                   ) : (
                     <>
                       <Brain className="h-4 w-4 mr-2" />
-                      Run Soil Moisture Analysis
+                      Update Estimate
                     </>
                   )}
                 </Button>
@@ -460,7 +448,7 @@ export default function SoilMoistureEstimatorPage() {
           </div>
 
           {/* Results Display */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className="lg:col-span-2 space-y-4 sm:space-y-6">
             {/* Main Results */}
             {soilResult && (
               <Card className="glass-card">
@@ -482,12 +470,15 @@ export default function SoilMoistureEstimatorPage() {
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {/* Main Moisture Reading */}
                     <div className="md:col-span-1">
-                      <div className="text-center p-6 rounded-lg glass">
+                      <div className="text-center p-5 sm:p-6 rounded-lg glass">
                         <div className={`text-6xl font-bold ${getMoistureColor(soilResult.moisturePercent)}`}>
                           {soilResult.moisturePercent}%
                         </div>
                         <div className="flex items-center justify-center mt-2">
-                          {getMoistureIcon(soilResult.classification)({ className: `h-6 w-6 mr-2 ${getMoistureColor(soilResult.moisturePercent)}` })}
+                          {(() => {
+                            const Icon = getMoistureIcon(soilResult.classification)
+                            return <Icon className={`h-6 w-6 mr-2 ${getMoistureColor(soilResult.moisturePercent)}`} />
+                          })()}
                           <span className="text-lg font-semibold">{soilResult.classification}</span>
                         </div>
                       </div>
@@ -495,17 +486,19 @@ export default function SoilMoistureEstimatorPage() {
 
                     {/* Supporting Metrics */}
                     <div className="md:col-span-2 grid grid-cols-2 gap-4">
-                      <Card className="glass-card">
-                        <CardContent className="p-4">
-                          <div className="flex items-center justify-between">
-                            <div>
-                              <p className="text-sm text-muted-foreground">GNSS-R SNR</p>
-                              <p className="text-2xl font-bold">{soilResult.gnssrSnr.toFixed(1)} dB</p>
+                      {soilResult.subsoilPercent !== undefined && (
+                        <Card className="glass-card">
+                          <CardContent className="p-4">
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <p className="text-sm text-muted-foreground">Subsoil Moisture</p>
+                                <p className="text-2xl font-bold">{soilResult.subsoilPercent?.toFixed(1)}%</p>
+                              </div>
+                              <Droplets className="h-8 w-8 text-blue-500" />
                             </div>
-                            <Satellite className="h-8 w-8 text-blue-500" />
-                          </div>
-                        </CardContent>
-                      </Card>
+                          </CardContent>
+                        </Card>
+                      )}
                       
                       <Card className="glass-card">
                         <CardContent className="p-4">
@@ -554,7 +547,6 @@ export default function SoilMoistureEstimatorPage() {
                 <TabsList className="grid w-full grid-cols-3">
                   <TabsTrigger value="recommendations">Recommendations</TabsTrigger>
                   <TabsTrigger value="analysis">Detailed Analysis</TabsTrigger>
-                  <TabsTrigger value="historical">Historical Trends</TabsTrigger>
                 </TabsList>
                 
                 <TabsContent value="recommendations" className="mt-4">
@@ -586,12 +578,10 @@ export default function SoilMoistureEstimatorPage() {
                     <CardContent>
                       <div className="space-y-4">
                         <div>
-                          <h4 className="font-semibold mb-2">GNSS-R Signal Characteristics</h4>
+                          <h4 className="font-semibold mb-2">Soil & Weather Basis</h4>
                           <p className="text-sm text-muted-foreground">
-                            The reflected GNSS signals show a SNR of {soilResult.gnssrSnr.toFixed(1)} dB, 
-                            indicating {soilResult.classification.toLowerCase()} soil conditions. 
-                            Signal coherence and delay-Doppler spreading patterns are consistent with 
-                            the estimated moisture levels.
+                            Estimates use Open-Meteo soil moisture (0–7 cm{soilResult.subsoilPercent !== undefined ? ' and 7–28 cm' : ''})
+                            and current weather conditions at your selected location.
                           </p>
                         </div>
                         <div>
@@ -605,9 +595,8 @@ export default function SoilMoistureEstimatorPage() {
                         <div>
                           <h4 className="font-semibold mb-2">Model Performance</h4>
                           <p className="text-sm text-muted-foreground">
-                            The AI model achieved {soilResult.confidence}% confidence by 
-                            integrating multi-source data including GNSS-R observations, 
-                            meteorological parameters, and historical soil patterns.
+                            Confidence ({soilResult.confidence}%) reflects data availability (surface and subsoil) and
+                            recent precipitation/humidity context.
                           </p>
                         </div>
                       </div>
@@ -615,27 +604,7 @@ export default function SoilMoistureEstimatorPage() {
                   </Card>
                 </TabsContent>
                 
-                <TabsContent value="historical" className="mt-4">
-                  <Card className="glass-card">
-                    <CardHeader>
-                      <CardTitle>Historical Trends</CardTitle>
-                      <CardDescription>
-                        Soil moisture patterns over time
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="h-64 flex items-center justify-center glass rounded-lg">
-                        <div className="text-center">
-                          <BarChart3 className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                          <p className="text-muted-foreground">Historical chart visualization</p>
-                          <p className="text-sm text-muted-foreground mt-2">
-                            7-day trend: {soilResult.classification} conditions maintained
-                          </p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </TabsContent>
+                {/* Historical tab removed until backed by real series */}
               </Tabs>
             )}
 

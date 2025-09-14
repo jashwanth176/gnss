@@ -594,10 +594,10 @@ export default function HomePage() {
                 <Button
                   size="lg"
                   className="group bg-gradient-to-r from-primary to-secondary hover:scale-110 transition-all duration-300 glow-cyan"
-                  onClick={() => window.open('https://iittnif-map.vercel.app/', '_blank')}
+                  onClick={() => window.open('/interactive-map-external', '_self')}
                 >
                   <Play className="h-5 w-5 mr-2 group-hover:scale-110 transition-transform" />
-                  Full Screen Map
+                  Launch Interactive Map
                   <Zap className="h-4 w-4 ml-2 group-hover:rotate-12 transition-transform" />
                 </Button>
                 
@@ -687,17 +687,24 @@ export default function HomePage() {
                           </div>
 
                           <div className="flex flex-wrap gap-3 pt-4">
-                            <Button className="group bg-gradient-to-r from-primary to-secondary text-primary-foreground hover:scale-105 transition-all duration-300 glow-cyan">
-                              Launch Analysis Tool
-                              <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                            </Button>
-                            <Button
-                              variant="outline"
-                              className="group hover:scale-105 transition-all duration-300 glass border-primary/30 hover:border-primary/50"
-                            >
-                              <BookOpen className="h-4 w-4 mr-2 group-hover:rotate-12 transition-transform" />
-                              View Documentation
-                            </Button>
+                            {useCase.id === "soil" ? (
+                              <Button
+                                className="group bg-gradient-to-r from-primary to-secondary text-primary-foreground hover:scale-105 transition-all duration-300 glow-cyan"
+                                onClick={() => window.open('/soil-moisture-estimator', '_self')}
+                              >
+                                Launch Soil Moisture Estimator
+                                <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                              </Button>
+                            ) : (
+                              <Button
+                                variant="outline"
+                                className="group hover:scale-105 transition-all duration-300 glass border-primary/30 hover:border-primary/50"
+                                onClick={() => howItWorksRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+                              >
+                                <BookOpen className="h-4 w-4 mr-2 group-hover:rotate-12 transition-transform" />
+                                View Documentation
+                              </Button>
+                            )}
                           </div>
                         </div>
 

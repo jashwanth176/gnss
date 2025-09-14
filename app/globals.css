@@ -206,4 +206,17 @@
   .backdrop-blur-md {
     backdrop-filter: blur(12px);
   }
+  /* Simple chip/button style for map overlay controls */
+  .mini-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #941C30;
+    background: rgba(148, 28, 48, 0.08);
+    border: 1px solid rgba(148, 28, 48, 0.25);
+    border-radius: 10px;
+  }
 /* Remove extra closing brace as it's not matching any opening at-rule */

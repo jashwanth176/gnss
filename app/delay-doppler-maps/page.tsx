@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -99,10 +99,11 @@ export default function DelayDopplerMapsPage() {
   const [surfaceType, setSurfaceType] = useState("ocean")
   const [dataSource, setDataSource] = useState<'simulation' | 'cygnss_real'>('simulation')
   const [realDataStatus, setRealDataStatus] = useState<string>('')
+  const timeRef = useRef(0)
   
-  // Generate initial data
+  // Generate data when parameters change (preserve current time)
   useEffect(() => {
-    const initialData = generateDDMData(snr[0], windSpeed[0], surfaceType, 0)
+    const initialData = generateDDMData(snr[0], windSpeed[0], surfaceType, timeRef.current)
     setDdmData(initialData)
   }, [snr, windSpeed, surfaceType])
   
@@ -113,6 +114,7 @@ export default function DelayDopplerMapsPage() {
       interval = setInterval(() => {
         setCurrentTime(prev => {
           const newTime = prev + 0.1
+          timeRef.current = newTime
           const newData = generateDDMData(snr[0], windSpeed[0], surfaceType, newTime)
           setDdmData(newData)
           return newTime
@@ -122,11 +124,10 @@ export default function DelayDopplerMapsPage() {
     return () => clearInterval(interval)
   }, [isPlaying, snr, windSpeed, surfaceType])
   
-  // Update data when parameters change
+  // Initialize with playing state for immediate animation
   useEffect(() => {
-    const newData = generateDDMData(snr[0], windSpeed[0], surfaceType, currentTime)
-    setDdmData(newData)
-  }, [snr, windSpeed, surfaceType, currentTime])
+    setIsPlaying(true)
+  }, [])
   
   const handlePlay = () => setIsPlaying(!isPlaying)
   const handleReset = () => {
@@ -483,7 +484,7 @@ export default function DelayDopplerMapsPage() {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Satellite className="w-5 h-5 text-[hsl(var(--primary))]" />
-                    Data Source & Accuracy
+                    Data Source
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
@@ -500,66 +501,12 @@ export default function DelayDopplerMapsPage() {
                       size="sm" 
                       variant="outline"
                       className="h-7 text-xs border-[hsl(var(--primary))]/40 text-[hsl(var(--primary))] hover:bg-[hsl(var(--primary))]/10"
-                      onClick={() => window.open('/api/cygnss', '_blank')}
+                      onClick={() => window.open('/download-datasets', '_self')}
                     >
                       View Real Data Sources →
                     </Button>
                   </div>
-                  
-                  <div>
-                    <h4 className="text-foreground font-medium text-sm mb-2">📡 FREE Real Data Sources:</h4>
-                    <div className="space-y-2 text-xs">
-                      <div className="bg-white/70 p-2 rounded border border-[hsl(var(--primary))]/20">
-                        <div className="flex items-center justify-between mb-1">
-                          <span className="text-foreground font-medium">NASA CYGNSS</span>
-                          <span className="text-[hsl(var(--primary))] text-xs">FREE</span>
-                        </div>
-                        <p className="text-muted-foreground mb-1">Hurricane monitoring satellites with DDM data</p>
-                        <div className="text-muted-foreground space-y-1">
-                          <div>• Registration: nasa.gov/earthdata</div>
-                          <div>• Coverage: Tropical oceans (±38°)</div>
-                          <div>• Format: NetCDF (.nc files)</div>
-                          <div>• Delay: 3-6 hours from real-time</div>
-                        </div>
-                      </div>
-                      
-                      <div className="bg-white/70 p-2 rounded border border-[hsl(var(--primary))]/20">
-                        <div className="flex items-center justify-between mb-1">
-                          <span className="text-foreground font-medium">ESA TechDemoSat-1</span>
-                          <span className="text-[hsl(var(--primary))] text-xs">FREE</span>
-                        </div>
-                        <p className="text-muted-foreground mb-1">First European GNSS-R mission data</p>
-                        <div className="text-muted-foreground space-y-1">
-                          <div>• Registration: esa.int/earthnet</div>
-                          <div>• Coverage: Global (historical)</div>
-                          <div>• Format: NetCDF files</div>
-                        </div>
-                      </div>
-                      
-                      <div className="bg-white/70 p-2 rounded border border-[hsl(var(--primary))]/20">
-                        <div className="flex items-center justify-between mb-1">
-                          <span className="text-foreground font-medium">GNOS-R (China)</span>
-                          <span className="text-[hsl(var(--primary))] text-xs">FREE</span>
-                        </div>
-                        <p className="text-muted-foreground mb-1">Chinese academy GNSS reflectometry</p>
-                        <div className="text-muted-foreground space-y-1">
-                          <div>• Registration: gnos.ac.cn</div>
-                          <div>• Coverage: Global land/ocean</div>
-                          <div>• Format: HDF5/NetCDF</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="pt-2 border-t border-[hsl(var(--primary))]/20">
-                    <h4 className="text-foreground font-medium text-sm mb-1">Current Simulation:</h4>
-                    <div className="text-xs text-muted-foreground space-y-1">
-                      <div>• Physics-based scattering models</div>
-                      <div>• Realistic surface roughness effects</div>
-                      <div>• Proper GNSS-R correlation patterns</div>
-                      <div>• 64×64 bin resolution, ±250Hz Doppler</div>
-                    </div>
-                  </div>
+                  {/* Trimmed details per request */}
                 </CardContent>
               </Card>
 
