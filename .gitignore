@@ -38,5 +38,3 @@ __pycache__/
 *.pyc
 *.pyo
 
-# Large media files
-*.mp4
