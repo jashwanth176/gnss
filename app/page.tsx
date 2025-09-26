@@ -39,6 +39,7 @@ import { useAuth } from "@/contexts/AuthContext"
 import dynamic from 'next/dynamic';
 import Link from "next/link"
 import Image from "next/image"
+import { SiteLogo } from "@/components/SiteLogo"
 import { fetchLatestUpdates } from "@/lib/fetchArxivUpdates"
 
 const SatelliteMap = dynamic(() => import("@/components/SatelliteMap"), { ssr: false });
@@ -144,6 +145,17 @@ export default function HomePage() {
 
   const useCases = [
     {
+      id: "soil",
+      title: "Soil Moisture Estimation",
+      icon: Sprout,
+      color: "green",
+      description:
+        "Retrieve high-resolution soil moisture content across agricultural and natural landscapes using AI-powered analysis of GNSS-R signal characteristics.",
+      features: ["Agricultural monitoring", "Drought assessment", "Irrigation optimization", "Climate research"],
+      image: "/2.png?height=300&width=400",
+      comingSoon: false,
+    },
+    {
       id: "ocean",
       title: "Ocean Altimetry",
       icon: Waves,
@@ -157,16 +169,7 @@ export default function HomePage() {
         "Coastal zone studies",
       ],
       image: "/1.png?height=300&width=400",
-    },
-    {
-      id: "soil",
-      title: "Soil Moisture Estimation",
-      icon: Sprout,
-      color: "green",
-      description:
-        "Retrieve high-resolution soil moisture content across agricultural and natural landscapes using AI-powered analysis of GNSS-R signal characteristics.",
-      features: ["Agricultural monitoring", "Drought assessment", "Irrigation optimization", "Climate research"],
-      image: "/2.png?height=300&width=400",
+      comingSoon: true,
     },
     {
       id: "cryo",
@@ -177,6 +180,7 @@ export default function HomePage() {
         "Track ice thickness variations, snow depth measurements, and permafrost changes in polar regions using specialized GNSS-R processing techniques.",
       features: ["Ice thickness mapping", "Snow depth analysis", "Permafrost monitoring", "Climate change studies"],
       image: "/3.png?height=300&width=400",
+      comingSoon: true,
     },
     {
       id: "orbit",
@@ -187,6 +191,7 @@ export default function HomePage() {
         "Enhance satellite positioning accuracy and validate orbital parameters using ground-truth GNSS-R measurements and advanced calibration algorithms.",
       features: ["Orbit determination", "Clock synchronization", "Atmospheric corrections", "Precision positioning"],
       image: "/4.png?height=300&width=400",
+      comingSoon: true,
     },
   ]
 
@@ -217,23 +222,12 @@ export default function HomePage() {
       <header className="fixed top-0 z-50 w-full glass-header transition-all duration-300">
         <div className="container flex h-24 items-center justify-between">
           <div className="flex items-center space-x-4">
-            {/* Logos */}
-            <div className="flex items-center space-x-4">
-              <Image
-                src="/Logo.png"
-                alt="GNSS-R Portal"
-                width={120}
-                height={64}
-                className="rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
-              />
-              <Image
-                src="/IIT_Tirupati_logo.svg"
-                alt="IIT Tirupati"
-                width={80}
-                height={60}
-                className="rounded-md shadow-lg hover:shadow-xl transition-all duration-300"
-              />
-            </div>
+            {/* Logo */}
+            <SiteLogo
+              size="md"
+              className="rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+              priority
+            />
             
             {/* Title */}
             <div className="hidden sm:block">
@@ -394,6 +388,7 @@ export default function HomePage() {
               <Button
                 size="lg"
                 className="group hover:scale-105 transition-all duration-300 bg-gradient-to-r from-primary to-secondary glow-cyan"
+                onClick={() => window.open('/interactive-map-external', '_self')}
               >
                 <Search className="h-5 w-5 mr-2 group-hover:rotate-12 transition-transform" />
                 Explore Live Data
@@ -639,7 +634,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <Tabs defaultValue="ocean" className="max-w-7xl mx-auto">
+          <Tabs defaultValue="soil" className="max-w-7xl mx-auto">
             <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4 mb-12 glass">
               {useCases.map((useCase) => {
                 const Icon = useCase.icon
@@ -651,6 +646,11 @@ export default function HomePage() {
                   >
                     <Icon className="h-4 w-4" />
                     <span className="hidden sm:inline">{useCase.title}</span>
+                    {useCase.comingSoon && (
+                      <Badge variant="outline" className="hidden xl:inline text-[10px] uppercase tracking-wide">
+                        Coming soon
+                      </Badge>
+                    )}
                   </TabsTrigger>
                 )
               })}
@@ -670,6 +670,11 @@ export default function HomePage() {
                               <Icon className={`h-8 w-8 text-${useCase.color}-400`} />
                             </div>
                             <h3 className="text-3xl font-bold text-gradient-cyan">{useCase.title}</h3>
+                            {useCase.comingSoon && (
+                              <Badge variant="secondary" className="bg-primary/10 text-primary uppercase tracking-wide">
+                                Coming soon
+                              </Badge>
+                            )}
                           </div>
 
                           <p className="text-lg text-muted-foreground leading-relaxed">{useCase.description}</p>
@@ -687,22 +692,21 @@ export default function HomePage() {
                           </div>
 
                           <div className="flex flex-wrap gap-3 pt-4">
-                            {useCase.id === "soil" ? (
+                            {!useCase.comingSoon ? (
                               <Button
                                 className="group bg-gradient-to-r from-primary to-secondary text-primary-foreground hover:scale-105 transition-all duration-300 glow-cyan"
-                                onClick={() => window.open('/soil-moisture-estimator', '_self')}
+                                onClick={() => window.open('/interactive-map-external', '_self')}
                               >
-                                Launch Soil Moisture Estimator
+                                Launch Soil Moisture Explorer
                                 <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
                               </Button>
                             ) : (
                               <Button
                                 variant="outline"
                                 className="group hover:scale-105 transition-all duration-300 glass border-primary/30 hover:border-primary/50"
-                                onClick={() => howItWorksRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+                                disabled
                               >
-                                <BookOpen className="h-4 w-4 mr-2 group-hover:rotate-12 transition-transform" />
-                                View Documentation
+                                Coming soon
                               </Button>
                             )}
                           </div>

@@ -11,7 +11,7 @@ import { Chrome, Mail, Lock, ArrowLeft, Satellite, Navigation } from 'lucide-rea
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import Image from 'next/image'
+import { SiteLogo } from "@/components/SiteLogo"
 
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false)
@@ -132,13 +132,7 @@ export default function LoginPage() {
               {/* Main Logo */}
               <div className="flex justify-center lg:justify-start">
                 <div className="p-4 bg-white/95 rounded-2xl shadow-2xl backdrop-blur-md border border-white/30 hover:shadow-3xl transition-all duration-300">
-                  <Image
-                    src="/Logo.png"
-                    alt="GNSS-R Portal Logo"
-                    width={120}
-                    height={120}
-                    className="rounded-xl"
-                  />
+                  <SiteLogo size="md" className="rounded-xl" />
                 </div>
               </div>
               
@@ -152,19 +146,12 @@ export default function LoginPage() {
               </div>
 
               {/* IIT Tirupati Logo */}
+              {/* Supporting Tagline */}
               <div className="flex items-center justify-center lg:justify-start space-x-4 p-4 bg-white/95 rounded-xl shadow-xl backdrop-blur-md border border-white/30 hover:shadow-2xl transition-all duration-300">
-                <div className="p-2 bg-white/90 rounded-lg shadow-lg">
-                  <Image
-                    src="/IIT_Tirupati_logo.svg"
-                    alt="IIT Tirupati"
-                    width={48}
-                    height={48}
-                    className="rounded-md"
-                  />
-                </div>
+                <SiteLogo size="sm" className="rounded" />
                 <div className="text-left">
-                  <p className="font-semibold text-sm">Indian Institute of Technology</p>
-                  <p className="text-xs text-muted-foreground">Tirupati</p>
+                  <p className="font-semibold text-sm">Satellite Signal Intelligence</p>
+                  <p className="text-xs text-muted-foreground">By the GNSS-R Research Team</p>
                 </div>
               </div>
 

@@ -5,6 +5,7 @@ import dynamic from "next/dynamic"
 import "leaflet/dist/leaflet.css"
 import { initializeChartJS } from "@/lib/chartSetup"
 import L from "leaflet"
+import { SiteLogo } from "@/components/SiteLogo"
 
 type SeriesPoint = { year: number; doy: number; value: number }
 type ParameterSeries = {
@@ -126,10 +127,7 @@ export default function InteractiveMapPage() {
             <a href="/" className="inline-flex items-center text-sm text-black hover:text-primary">
               <span className="mr-2">←</span> Back to Home
             </a>
-            <div className="flex items-center gap-4">
-              <img src="/Logo.png" alt="GNSS-R Portal" className="h-12 w-auto rounded-lg shadow" />
-              <img src="/IIT_Tirupati_logo.svg" alt="IIT Tirupati" className="h-10 w-auto rounded-md shadow" />
-            </div>
+            <SiteLogo size="md" className="rounded-lg shadow" />
           </div>
         </div>
 

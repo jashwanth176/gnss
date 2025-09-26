@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
 import { ArrowLeft, Palette, Bell, Shield, Download, Trash2 } from 'lucide-react'
 import Link from 'next/link'
-import Image from 'next/image'
+import { SiteLogo } from "@/components/SiteLogo"
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
@@ -86,20 +86,7 @@ export default function SettingsPage() {
                 </Button>
               </Link>
               <div className="flex items-center space-x-4">
-                <Image
-                  src="/Logo.png"
-                  alt="GNSS-R Portal"
-                  width={120}
-                  height={64}
-                  className="rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
-                />
-                <Image
-                  src="/IIT_Tirupati_logo.svg"
-                  alt="IIT Tirupati"
-                  width={80}
-                  height={60}
-                  className="rounded-md shadow-lg hover:shadow-xl transition-all duration-300"
-                />
+                <SiteLogo size="md" className="rounded-lg shadow-lg hover:shadow-xl transition-all duration-300" />
                 <h1 className="text-3xl font-bold text-black">Settings</h1>
               </div>
             </div>

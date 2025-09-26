@@ -32,7 +32,7 @@ import {
   Zap
 } from "lucide-react"
 import Link from "next/link"
-import Image from "next/image"
+import { SiteLogo } from "@/components/SiteLogo"
 
 interface WeatherData {
   temperature: number
@@ -272,20 +272,7 @@ export default function SoilMoistureEstimatorPage() {
                 </Button>
               </Link>
               <div className="flex items-center space-x-4">
-                <Image
-                  src="/Logo.png"
-                  alt="GNSS-R Portal"
-                  width={120}
-                  height={64}
-                  className="rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
-                />
-                <Image
-                  src="/IIT_Tirupati_logo.svg"
-                  alt="IIT Tirupati"
-                  width={80}
-                  height={60}
-                  className="rounded-md shadow-lg hover:shadow-xl transition-all duration-300"
-                />
+                <SiteLogo size="md" className="rounded-lg shadow-lg hover:shadow-xl transition-all duration-300" />
                 <div>
                   <h1 className="text-2xl font-bold text-black">AI Soil Moisture Estimator</h1>
                   <p className="text-sm text-black">GNSS-R powered precision agriculture</p>

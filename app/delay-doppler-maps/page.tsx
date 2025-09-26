@@ -19,8 +19,8 @@ import {
   BarChart3
 } from "lucide-react"
 import Link from "next/link"
-import Image from "next/image"
 import dynamic from "next/dynamic"
+import { SiteLogo } from "@/components/SiteLogo"
 
 // Import Canvas component dynamically with proper loading
 const DDMCanvas = dynamic(() => import("@/components/DDMCanvasSimple"), { 
@@ -203,20 +203,7 @@ export default function DelayDopplerMapsPage() {
                 </Button>
               </Link>
               <div className="flex items-center gap-3">
-                <Image
-                  src="/Logo.png"
-                  alt="GNSS-R Portal"
-                  width={28}
-                  height={28}
-                  className="rounded-lg"
-                />
-                <Image
-                  src="/IIT_Tirupati_logo.svg"
-                  alt="IIT Tirupati"
-                  width={24}
-                  height={24}
-                  className="rounded"
-                />
+                <SiteLogo size="sm" className="rounded-lg" />
         <Satellite className="w-6 h-6 text-[hsl(var(--primary))]" />
         <h1 className="text-2xl font-bold text-black">Real-time Delay-Doppler Maps</h1>
               </div>

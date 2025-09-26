@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
-import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -10,6 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Progress } from "@/components/ui/progress"
 import { ArrowLeft, Download, HardDrive, Info, Satellite } from "lucide-react"
+import { SiteLogo } from "@/components/SiteLogo"
 
 type LocalNcFile = {
   name: string
@@ -62,8 +62,7 @@ export default function CygnssDownloadsPage() {
                 </Button>
               </Link>
               <div className="flex items-center gap-3">
-                <Image src="/Logo.png" alt="GNSS-R Portal" width={28} height={28} className="rounded" />
-                <Image src="/IIT_Tirupati_logo.svg" alt="IIT Tirupati" width={24} height={24} className="rounded" />
+                <SiteLogo size="sm" className="rounded" />
                 <Satellite className="w-5 h-5 text-[hsl(var(--primary))]" />
                 <div>
                   <h1 className="text-xl font-bold text-black">CYGNSS Data</h1>
