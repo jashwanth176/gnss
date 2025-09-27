@@ -66,12 +66,16 @@ export default function HomePage() {
 
   // Navigation handler
   const scrollToSection = (sectionName: string) => {
+    if (sectionName === 'Contact') {
+      window.location.href = '/contact'
+      return
+    }
+    
     const refs = {
       'Home': heroRef,
       'Data Portal': mapRef,
       'Live Visualization': featuresRef,
       'Documentation': howItWorksRef,
-      'Contact': updatesRef
     }
     const ref = refs[sectionName as keyof typeof refs]
     if (ref?.current) {
@@ -1005,7 +1009,11 @@ export default function HomePage() {
           <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/10">
             <div className="flex flex-wrap justify-center md:justify-start gap-6 text-sm mb-4 md:mb-0 text-gray-700">
               {["Contact", "Privacy Policy", "Terms of Service", "API"].map((item) => (
-        <a key={item} href="#" className="hover:text-primary transition-colors duration-300">
+                <a 
+                  key={item} 
+                  href={item === "Contact" ? "/contact" : "#"} 
+                  className="hover:text-primary transition-colors duration-300"
+                >
                   {item}
                 </a>
               ))}
