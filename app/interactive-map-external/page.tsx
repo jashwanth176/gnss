@@ -33,7 +33,7 @@ export default function InteractiveMapExternal() {
         <div className="rounded-xl overflow-hidden border shadow bg-background" style={{ height: "80vh" }}>
           <iframe
             title="External Interactive Map"
-            src="https://iittnif-map.vercel.app/"
+            src="https://jashwanth176.github.io/map-india/"
             style={{ width: "100%", height: "100%", border: 0 }}
           />
         </div>

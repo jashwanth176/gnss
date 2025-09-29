@@ -539,7 +539,7 @@ export default function HomePage() {
                     <TabsContent value="external" className="mt-6">
                       <div className="relative bg-muted rounded-xl overflow-hidden" style={{ height: '500px' }}>
                         <iframe
-                          src="https://iittnif-map.vercel.app/"
+                          src="https://jashwanth176.github.io/map-india/"
                           className="w-full h-full border-0"
                           title="Interactive GNSS-R Map"
                           loading="lazy"
@@ -713,6 +713,16 @@ export default function HomePage() {
                                 Coming soon
                               </Button>
                             )}
+
+                            {/* Access EOS/ISRO data (Bhoonidhi) */}
+                            {useCase.id === 'soil' && (
+                              <Link href="/bhoonidhi">
+                                <Button variant="outline" className="glass border-primary/30">
+                                  EOS/ISRO Data (Bhoonidhi)
+                                  <ExternalLink className="h-4 w-4 ml-2" />
+                                </Button>
+                              </Link>
+                            )}
                           </div>
                         </div>
 
@@ -733,6 +743,36 @@ export default function HomePage() {
               )
             })}
           </Tabs>
+        </div>
+      </section>
+
+      {/* Bhoonidhi (NRSC) Portal Section */}
+      <section className="py-12 px-4">
+        <div className="container mx-auto max-w-6xl">
+          <Card className="glass-card border-primary/20">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-3">
+                <Database className="h-5 w-5 text-primary" />
+                Access EOS/ISRO Data (Bhoonidhi)
+              </CardTitle>
+              <CardDescription>
+                Explore Soil Moisture and Digital Elevation Model (DEM) datasets via NRSC’s official Bhoonidhi portal.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="flex flex-wrap gap-3">
+              <Link href="/bhoonidhi">
+                <Button className="bg-gradient-to-r from-primary to-secondary">
+                  Open Embedded Portal
+                </Button>
+              </Link>
+              <a href="https://bhoonidhi.nrsc.gov.in/bhoonidhi/index.html" target="_blank" rel="noopener noreferrer">
+                <Button variant="outline" className="glass border-primary/30">
+                  Open in new tab
+                  <ExternalLink className="h-4 w-4 ml-2" />
+                </Button>
+              </a>
+            </CardContent>
+          </Card>
         </div>
       </section>
 

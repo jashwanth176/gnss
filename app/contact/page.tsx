@@ -3,8 +3,10 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { ArrowLeft, Mail, Phone, MapPin, ExternalLink, Users, Building2, Globe } from "lucide-react"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+import { ArrowLeft, Mail, Phone, MapPin, ExternalLink, Users, Globe } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
 import { SiteLogo } from "@/components/SiteLogo"
 
 export default function ContactPage() {
@@ -40,232 +42,193 @@ export default function ContactPage() {
             <h2 className="text-4xl font-bold mb-6 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
               Spatial Intelligence Team
             </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Connect with our team of researchers and engineers at the Geo-Intelligence and Applications Laboratory, 
-              IIT Tirupati Navavishkar I-Hub Foundation.
-            </p>
           </div>
 
-          {/* Project Director */}
-          <div className="mb-12">
-            <Card className="glass-card">
-              <CardHeader>
-                <div className="flex items-center justify-between flex-wrap gap-4">
-                  <CardTitle className="flex items-center gap-3 text-2xl">
-                    <Users className="h-6 w-6 text-primary" />
-                    Dr. Roshan Srivastav
-                  </CardTitle>
-                  <Badge variant="default" className="bg-gradient-to-r from-primary to-secondary text-white">
-                    Project Director & Lab Head
-                  </Badge>
-                </div>
-                <CardDescription className="text-lg">
-                  Project Director, IITTNiF and Head, Geo-Intel Lab
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-4">
-                    <div>
-                      <h4 className="font-semibold text-lg mb-2">Academic Position</h4>
-                      <p className="text-muted-foreground">
-                        Associate Professor, Department of Civil and Environmental Engineering
-                      </p>
-                    </div>
-                    
-                    <div className="space-y-3">
-                      <div className="flex items-center gap-3 p-3 rounded-lg bg-background/50 border">
-                        <Mail className="h-5 w-5 text-primary flex-shrink-0" />
-                        <div className="space-y-1">
-                          <a 
-                            href="mailto:project.director@iittnif.com"
-                            className="block text-sm font-medium hover:text-primary transition-colors"
-                          >
-                            project.director@iittnif.com
-                          </a>
-                          <a 
-                            href="mailto:roshan@iittp.ac.in"
-                            className="block text-sm text-muted-foreground hover:text-primary transition-colors"
-                          >
-                            roshan@iittp.ac.in
-                          </a>
+          {/* Project Director moved to Team section below */}
+
+          {/* Collapsible Sections: Team and Advisors/Mentors/Experts */}
+          <div className="mb-12 space-y-6">
+            <Accordion type="multiple" className="w-full" defaultValue={[]}>
+              {/* Advisors/Mentors/Experts - shown first */}
+              <AccordionItem value="advisors" className="border rounded-lg">
+                <AccordionTrigger className="px-4 py-3 hover:no-underline">
+                  <div className="flex items-center gap-3">
+                    <Users className="h-5 w-5 text-primary" />
+                    <span className="text-lg font-semibold">Advisors / Mentors / Experts</span>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent className="px-2 pb-4">
+                  <Card className="glass-card">
+                    <CardHeader>
+                      <CardTitle className="text-xl">Advisory Panel</CardTitle>
+                      <CardDescription>Advisors, mentors and experts</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {/* Prof. YVN Krishnamurthy */}
+                        <div className="p-4 rounded-lg bg-background/30 border flex items-center gap-4">
+                          <div className="relative h-16 w-16 rounded-full overflow-hidden border">
+                            <Image src="/yvn.jpg" alt="Prof. YVN Krishnamurthy" fill sizes="64px" className="object-cover" />
+                          </div>
+                          <div>
+                            <h4 className="font-semibold leading-tight">Prof. YVN Krishnamurthy</h4>
+                            <p className="text-xs text-muted-foreground">IIT Tirupati • Advisor / Mentor</p>
+                          </div>
+                        </div>
+
+                        {/* Dr. Avardh B Narayan */}
+                        <div className="p-4 rounded-lg bg-background/30 border flex items-center gap-4">
+                          <div className="relative h-16 w-16 rounded-full overflow-hidden border">
+                            <Image src="/avadh.jpg" alt="Dr. Avardh B Narayan" fill sizes="64px" className="object-cover" />
+                          </div>
+                          <div>
+                            <h4 className="font-semibold leading-tight">Dr. Avardh B Narayan</h4>
+                            <p className="text-xs text-muted-foreground">IIT Tirupati • Advisor / Expert</p>
+                          </div>
+                        </div>
+
+                        {/* Dr. Ramesh Patel */}
+                        <div className="p-4 rounded-lg bg-background/30 border flex items-center gap-4">
+                          <div className="relative h-16 w-16 rounded-full overflow-hidden border">
+                            <Image src="/ramesh.jpg" alt="Dr. Ramesh Patel" fill sizes="64px" className="object-cover" />
+                          </div>
+                          <div>
+                            <h4 className="font-semibold leading-tight">Dr. Ramesh Patel</h4>
+                            <p className="text-xs text-muted-foreground">IIT Tirupati • Advisor / Expert</p>
+                          </div>
                         </div>
                       </div>
-                      
-                      <div className="flex items-center gap-3 p-3 rounded-lg bg-background/50 border">
-                        <Phone className="h-5 w-5 text-primary flex-shrink-0" />
-                        <a 
-                          href="tel:+919750447774"
-                          className="text-sm font-medium hover:text-primary transition-colors"
-                        >
-                          +91-9750447774
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-4">
-                    <div>
-                      <h4 className="font-semibold text-lg mb-2">Research Focus</h4>
-                      <div className="flex flex-wrap gap-2">
-                        <Badge variant="secondary">GNSS-R Technology</Badge>
-                        <Badge variant="secondary">Remote Sensing</Badge>
-                        <Badge variant="secondary">Geospatial Intelligence</Badge>
-                        <Badge variant="secondary">Earth Observation</Badge>
-                      </div>
-                    </div>
-                    
-                    <div>
-                      <h4 className="font-semibold text-lg mb-2">Leadership Role</h4>
-                      <p className="text-muted-foreground">
-                        Leading cutting-edge research in satellite-based Earth observation and 
-                        GNSS reflectometry applications at IIT Tirupati.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+                    </CardContent>
+                  </Card>
+                </AccordionContent>
+              </AccordionItem>
 
-          {/* Research Fellow */}
-          <div className="mb-12">
-            <Card className="glass-card">
-              <CardHeader>
-                <div className="flex items-center justify-between flex-wrap gap-4">
-                  <CardTitle className="flex items-center gap-3 text-xl">
+              {/* Team - includes Research Fellow and Developer (shown second) */}
+              <AccordionItem value="team" className="border rounded-lg">
+                <AccordionTrigger className="px-4 py-3 hover:no-underline">
+                  <div className="flex items-center gap-3">
                     <Users className="h-5 w-5 text-primary" />
-                    Dr. G Naga Sai Madhavi
-                  </CardTitle>
-                  <Badge variant="outline" className="border-primary/50 text-primary">
-                    Chanakya Post Doctoral Fellow
-                  </Badge>
-                </div>
-                <CardDescription>
-                  IITTNIF, IIT Tirupati
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <h4 className="font-semibold mb-2">Research Expertise</h4>
-                    <p className="text-muted-foreground mb-3">
-                      Advanced research in GNSS-R signal processing, remote sensing applications, 
-                      and Earth observation technologies.
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      <Badge variant="secondary">Signal Processing</Badge>
-                      <Badge variant="secondary">Remote Sensing</Badge>
-                      <Badge variant="secondary">Data Analysis</Badge>
-                    </div>
+                    <span className="text-lg font-semibold">Team</span>
                   </div>
-                  <div className="p-3 rounded-lg bg-background/50 border">
-                    <div className="flex items-center gap-3">
-                      <Mail className="h-4 w-4 text-primary flex-shrink-0" />
-                      <span className="text-sm text-muted-foreground">
-                        Research inquiries via Project Director
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+                </AccordionTrigger>
+                <AccordionContent className="px-2 pb-4 space-y-6">
+                  {/* Dr. Roshan Srivastav */}
+                  <Card className="glass-card">
+                    <CardHeader>
+                      <div className="flex items-center justify-between flex-wrap gap-4">
+                        <div className="flex items-center gap-4">
+                          <div className="relative h-16 w-16 rounded-full overflow-hidden border">
+                            <Image src="/roshan.jpg" alt="Dr. Roshan Srivastav" fill sizes="64px" className="object-cover" />
+                          </div>
+                          <CardTitle className="flex items-center gap-3 text-xl">
+                            <Users className="h-5 w-5 text-primary" />
+                            Dr. Roshan Srivastav
+                          </CardTitle>
+                        </div>
+                      </div>
+                      <CardDescription>
+                        Associate Professor, Dept. of Civil & Environmental Engineering, IIT Tirupati
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="p-3 rounded-lg bg-background/50 border">
+                          <div className="flex items-center gap-3">
+                            <Mail className="h-4 w-4 text-primary flex-shrink-0" />
+                            <div className="space-y-1">
+                              <a href="mailto:project.director@iittnif.com" className="block text-sm font-medium hover:text-primary transition-colors">project.director@iittnif.com</a>
+                              <a href="mailto:roshan@iittp.ac.in" className="block text-sm text-muted-foreground hover:text-primary transition-colors">roshan@iittp.ac.in</a>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="p-3 rounded-lg bg-background/50 border">
+                          <div className="flex items-center gap-3">
+                            <Phone className="h-4 w-4 text-primary flex-shrink-0" />
+                            <a href="tel:+919750447774" className="text-sm font-medium hover:text-primary transition-colors">+91-9750447774</a>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
 
-          {/* Developer */}
-          <div className="mb-12">
-            <Card className="glass-card">
-              <CardHeader>
-                <div className="flex items-center justify-between flex-wrap gap-4">
-                  <CardTitle className="flex items-center gap-3 text-xl">
-                    <Users className="h-5 w-5 text-primary" />
-                    Jashwanth Valurouthu
-                  </CardTitle>
-                  <Badge variant="outline" className="border-secondary/50 text-secondary">
-                    Developer
-                  </Badge>
-                </div>
-                <CardDescription>
-                  GNSS-R Portal Development
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <h4 className="font-semibold mb-2">Development Expertise</h4>
-                    <p className="text-muted-foreground mb-3">
-                      Full-stack development of the GNSS-R Web Portal, data visualization, 
-                      and interactive mapping systems.
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      <Badge variant="secondary">Web Development</Badge>
-                      <Badge variant="secondary">Data Visualization</Badge>
-                      <Badge variant="secondary">UI/UX Design</Badge>
-                      <Badge variant="secondary">System Integration</Badge>
-                    </div>
-                  </div>
-                  <div className="p-3 rounded-lg bg-background/50 border">
-                    <div className="flex items-center gap-3">
-                      <Mail className="h-4 w-4 text-primary flex-shrink-0" />
-                      <a 
-                        href="mailto:vjashwanth.ai@gmail.com"
-                        className="text-sm font-medium hover:text-primary transition-colors"
-                      >
-                        vjashwanth.ai@gmail.com
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+                  {/* Research Fellow */}
+                  <Card className="glass-card">
+                    <CardHeader>
+                      <div className="flex items-center justify-between flex-wrap gap-4">
+                        <CardTitle className="flex items-center gap-3 text-xl">
+                          <Users className="h-5 w-5 text-primary" />
+                          Dr. G Naga Sai Madhavi
+                        </CardTitle>
+                        <Badge variant="outline" className="border-primary/50 text-primary">
+                          Chanakya Post Doctoral Fellow
+                        </Badge>
+                      </div>
+                      <CardDescription>
+                        IITTNIF, IIT Tirupati
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                          <h4 className="font-semibold mb-2">Research Expertise</h4>
+                          <p className="text-muted-foreground mb-3">GNSS‑R signal processing and remote sensing.</p>
+                          <div className="flex flex-wrap gap-2">
+                            <Badge variant="secondary">Signal Processing</Badge>
+                            <Badge variant="secondary">Remote Sensing</Badge>
+                          </div>
+                        </div>
+                        <div className="p-3 rounded-lg bg-background/50 border">
+                          <div className="flex items-center gap-3">
+                            <Mail className="h-4 w-4 text-primary flex-shrink-0" />
+                            <a href="mailto:postdoc_nsm@iittnif.com" className="text-sm font-medium hover:text-primary transition-colors">postdoc_nsm@iittnif.com</a>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
 
-          {/* Student Advisors */}
-          <div className="mb-12">
-            <Card className="glass-card">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-3 text-xl">
-                  <Users className="h-5 w-5 text-primary" />
-                  Student Advisors
-                </CardTitle>
-                <CardDescription>
-                  Academic mentors and research coordinators
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  <div className="p-4 rounded-lg bg-background/30 border">
-                    <h4 className="font-semibold">Dr. Lorem Ipsum</h4>
-                    <p className="text-sm text-muted-foreground mb-2">Research Advisor</p>
-                    <Badge variant="outline" className="text-xs">PhD in Remote Sensing</Badge>
-                    <div className="flex items-center gap-2 mt-3">
-                      <Mail className="h-3 w-3 text-primary" />
-                      <span className="text-xs text-muted-foreground">lorem.ipsum@example.edu</span>
-                    </div>
-                  </div>
-                  
-                  <div className="p-4 rounded-lg bg-background/30 border">
-                    <h4 className="font-semibold">Prof. Dolor Sit</h4>
-                    <p className="text-sm text-muted-foreground mb-2">Academic Mentor</p>
-                    <Badge variant="outline" className="text-xs">PhD in Signal Processing</Badge>
-                    <div className="flex items-center gap-2 mt-3">
-                      <Mail className="h-3 w-3 text-primary" />
-                      <span className="text-xs text-muted-foreground">dolor.sit@example.edu</span>
-                    </div>
-                  </div>
-                  
-                  <div className="p-4 rounded-lg bg-background/30 border">
-                    <h4 className="font-semibold">Dr. Consectetur Amet</h4>
-                    <p className="text-sm text-muted-foreground mb-2">Research Coordinator</p>
-                    <Badge variant="outline" className="text-xs">PhD in Earth System Science</Badge>
-                    <div className="flex items-center gap-2 mt-3">
-                      <Mail className="h-3 w-3 text-primary" />
-                      <span className="text-xs text-muted-foreground">consectetur.amet@example.edu</span>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                  {/* Developer */}
+                  <Card className="glass-card">
+                    <CardHeader>
+                      <div className="flex items-center justify-between flex-wrap gap-4">
+                        <CardTitle className="flex items-center gap-3 text-xl">
+                          <Users className="h-5 w-5 text-primary" />
+                          Jashwanth Valurouthu
+                        </CardTitle>
+                        <Badge variant="outline" className="border-secondary/50 text-secondary">
+                          Developer
+                        </Badge>
+                      </div>
+                      <CardDescription>Full Stack Developer, GNSS R Portal.</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                          <h4 className="font-semibold mb-2">Development Expertise</h4>
+                          <p className="text-muted-foreground mb-3">Building the GNSS R web portal and interactive data visualizations.</p>
+                          <div className="flex flex-wrap gap-2">
+                            <Badge variant="secondary">Web Development</Badge>
+                            <Badge variant="secondary">Data Visualization</Badge>
+                            <Badge variant="secondary">UI/UX</Badge>
+                          </div>
+                        </div>
+                        <div className="p-3 rounded-lg bg-background/50 border">
+                          <div className="flex items-center gap-3">
+                            <Mail className="h-4 w-4 text-primary flex-shrink-0" />
+                            <a 
+                              href="mailto:vjashwanth.ai@gmail.com"
+                              className="text-sm font-medium hover:text-primary transition-colors"
+                            >
+                              vjashwanth.ai@gmail.com
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
           </div>
 
           {/* Contact Information */}
