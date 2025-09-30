@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { useEffect, useMemo, useState } from "react"
+import { useMemo, useState } from "react"
 import { ArrowLeft, ExternalLink, Database, Sprout, Mountain, Copy } from "lucide-react"
 import { SiteLogo } from "@/components/SiteLogo"
 import { Button } from "@/components/ui/button"
@@ -12,17 +12,8 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 const BHOONIDHI_URL = "https://bhoonidhi.nrsc.gov.in/bhoonidhi/index.html"
 
 export default function BhoonidhiPage() {
-  const [embedReady, setEmbedReady] = useState(false)
-  const [embedBlocked, setEmbedBlocked] = useState(false)
   const [copied, setCopied] = useState<string | null>(null)
   const [previewError, setPreviewError] = useState(false)
-
-  useEffect(() => {
-    const t = setTimeout(() => {
-      if (!embedReady) setEmbedBlocked(true)
-    }, 3500)
-    return () => clearTimeout(t)
-  }, [embedReady])
 
   const soilKeywords = useMemo(() => [
     "Soil Moisture",
@@ -94,39 +85,30 @@ export default function BhoonidhiPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="rounded-lg overflow-hidden border bg-background/50 relative">
-                <iframe
-                  src={BHOONIDHI_URL}
-                  title="Bhoonidhi Portal"
-                  className="w-full"
-                  style={{ minHeight: "70vh" }}
-                  onLoad={() => setEmbedReady(true)}
-                  onError={() => setEmbedBlocked(true)}
-                />
-                {embedBlocked && !embedReady && (
-                  <div className="absolute inset-0">
-                    {/* Blurred preview background */}
-                    {!previewError && (
-                      <img
-                        src="/fb.jpeg"
-                        alt="Bhoonidhi preview"
-                        className="absolute inset-0 w-full h-full object-cover blur-lg scale-105"
-                        onError={() => setPreviewError(true)}
-                      />
-                    )}
-                    {/* Dark overlay for contrast */}
-                    <div className="absolute inset-0 bg-background/60" />
-                    {/* Centered CTA button */}
-                    <div className="absolute inset-0 flex items-center justify-center p-6">
-                      <a href={BHOONIDHI_URL} target="_blank" rel="noopener noreferrer">
-                        <Button size="lg" className="bg-gradient-to-r from-primary to-secondary shadow-xl">
-                          Open Bhoonidhi in new tab
-                          <ExternalLink className="h-4 w-4 ml-2" />
-                        </Button>
-                      </a>
-                    </div>
+              <div className="rounded-lg overflow-hidden border bg-background/50 relative" style={{ minHeight: "70vh" }}>
+                {/* Direct fallback with preview - no iframe embedding */}
+                <div className="absolute inset-0">
+                  {/* Blurred preview background */}
+                  {!previewError && (
+                    <img
+                      src="/fb.jpeg"
+                      alt="Bhoonidhi preview"
+                      className="absolute inset-0 w-full h-full object-cover blur-md scale-105"
+                      onError={() => setPreviewError(true)}
+                    />
+                  )}
+                  {/* Dark overlay for contrast */}
+                  <div className="absolute inset-0 bg-background/60" />
+                  {/* Centered CTA button */}
+                  <div className="absolute inset-0 flex items-center justify-center p-6">
+                    <a href={BHOONIDHI_URL} target="_blank" rel="noopener noreferrer">
+                      <Button size="lg" className="bg-gradient-to-r from-primary to-secondary shadow-xl">
+                        Open Bhoonidhi Portal
+                        <ExternalLink className="h-4 w-4 ml-2" />
+                      </Button>
+                    </a>
                   </div>
-                )}
+                </div>
               </div>
 
               {/* Quick Guides and Resources */}

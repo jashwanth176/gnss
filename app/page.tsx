@@ -71,6 +71,11 @@ export default function HomePage() {
       return
     }
     
+    if (sectionName === 'Data Sources') {
+      window.location.href = '/bhoonidhi'
+      return
+    }
+    
     const refs = {
       'Home': heroRef,
       'Data Portal': mapRef,
@@ -242,7 +247,7 @@ export default function HomePage() {
           </div>
 
       <nav className="hidden lg:flex items-center space-x-10">
-            {["Home", "Data Portal", "Live Visualization", "Documentation", "Contact"].map((item, index) => (
+            {["Home", "Data Portal", "Live Visualization", "Data Sources", "Documentation", "Contact"].map((item, index) => (
               <button
                 key={item}
                 onClick={() => scrollToSection(item)}
@@ -289,7 +294,7 @@ export default function HomePage() {
         {mobileMenuOpen && (
           <div className="lg:hidden border-t border-white/10 glass">
             <div className="container py-4 space-y-4">
-              {["Home", "Data Portal", "Live Visualization", "Documentation", "Contact"].map((item) => (
+              {["Home", "Data Portal", "Live Visualization", "Data Sources", "Documentation", "Contact"].map((item) => (
                 <button 
                   key={item} 
                   onClick={() => scrollToSection(item)}
@@ -398,6 +403,17 @@ export default function HomePage() {
                 Explore Live Data
                 <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
+              <Link href="/bhoonidhi">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="group hover:scale-105 transition-all duration-300 glass border-primary/30 hover:border-primary/50"
+                >
+                  <Database className="h-5 w-5 mr-2 group-hover:scale-110 transition-transform" />
+                  EOS/ISRO Data Portal
+                  <ExternalLink className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </Link>
               <Button
                 size="lg"
                 variant="outline"
