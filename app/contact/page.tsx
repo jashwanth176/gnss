@@ -176,10 +176,11 @@ export default function ContactPage() {
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                           <h4 className="font-semibold mb-2">Research Expertise</h4>
-                          <p className="text-muted-foreground mb-3">GNSS‑R signal processing and remote sensing.</p>
+                          <p className="text-muted-foreground mb-3">GNSS - Soil Moisture, Atmospheric Science and Climate Change</p>
                           <div className="flex flex-wrap gap-2">
-                            <Badge variant="secondary">Signal Processing</Badge>
-                            <Badge variant="secondary">Remote Sensing</Badge>
+                            <Badge variant="secondary">Soil Moisture</Badge>
+                            <Badge variant="secondary">Atmospheric Science</Badge>
+                            <Badge variant="secondary">Climate Change</Badge>
                           </div>
                         </div>
                         <div className="p-3 rounded-lg bg-background/50 border">
