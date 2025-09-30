@@ -76,9 +76,13 @@ export default function HomePage() {
       return
     }
     
+    if (sectionName === 'Download Datasets') {
+      window.location.href = '/download-datasets'
+      return
+    }
+    
     const refs = {
       'Home': heroRef,
-      'Data Portal': mapRef,
       'Live Visualization': featuresRef,
       'Documentation': howItWorksRef,
     }
@@ -247,7 +251,7 @@ export default function HomePage() {
           </div>
 
       <nav className="hidden lg:flex items-center space-x-10">
-            {["Home", "Data Portal", "Live Visualization", "Data Sources", "Documentation", "Contact"].map((item, index) => (
+            {["Home", "Download Datasets", "Live Visualization", "Data Sources", "Documentation", "Contact"].map((item, index) => (
               <button
                 key={item}
                 onClick={() => scrollToSection(item)}
@@ -294,7 +298,7 @@ export default function HomePage() {
         {mobileMenuOpen && (
           <div className="lg:hidden border-t border-white/10 glass">
             <div className="container py-4 space-y-4">
-              {["Home", "Data Portal", "Live Visualization", "Data Sources", "Documentation", "Contact"].map((item) => (
+              {["Home", "Download Datasets", "Live Visualization", "Data Sources", "Documentation", "Contact"].map((item) => (
                 <button 
                   key={item} 
                   onClick={() => scrollToSection(item)}

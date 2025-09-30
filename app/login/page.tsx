@@ -145,10 +145,8 @@ export default function LoginPage() {
                 </p>
               </div>
 
-              {/* IIT Tirupati Logo */}
               {/* Supporting Tagline */}
               <div className="flex items-center justify-center lg:justify-start space-x-4 p-4 bg-white/95 rounded-xl shadow-xl backdrop-blur-md border border-white/30 hover:shadow-2xl transition-all duration-300">
-                <SiteLogo size="sm" className="rounded" />
                 <div className="text-left">
                   <p className="font-semibold text-sm">Satellite Signal Intelligence</p>
                   <p className="text-xs text-muted-foreground">By the GNSS-R Research Team</p>
