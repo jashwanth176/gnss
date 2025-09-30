@@ -541,7 +541,7 @@ export default function HomePage() {
               Live Global Data Preview
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Explore real-time GNSS-R observations from around the world
+              Explore real-time GNSS-R observations, IIT campus environmental data, city monitoring systems, and global weather patterns
             </p>
           </div>
 
@@ -551,9 +551,11 @@ export default function HomePage() {
                 {/* Interactive Preview Options */}
                 <div className="mb-6">
                   <Tabs defaultValue="external" className="w-full">
-                    <TabsList className="grid w-full grid-cols-2">
+                    <TabsList className="grid w-full grid-cols-4">
                       <TabsTrigger value="external">GNSS-R Portal</TabsTrigger>
-                      <TabsTrigger value="weather">Weather & Ocean Data</TabsTrigger>
+                      <TabsTrigger value="iit-campus">Research Institutes</TabsTrigger>
+                      <TabsTrigger value="city-data">City Environment</TabsTrigger>
+                      <TabsTrigger value="weather">Weather & Ocean</TabsTrigger>
                     </TabsList>
                     
                     <TabsContent value="external" className="mt-6">
@@ -564,6 +566,49 @@ export default function HomePage() {
                           title="Interactive GNSS-R Map"
                           loading="lazy"
                         />
+                      </div>
+                    </TabsContent>
+                    
+                    <TabsContent value="iit-campus" className="mt-6">
+                      <div className="relative bg-muted rounded-xl overflow-hidden" style={{ height: '500px' }}>
+                        <iframe
+                          src="https://iittnif-map.vercel.app/"
+                          className="w-full h-full border-0"
+                          title="Premier Institutes Environmental Data"
+                          loading="lazy"
+                        />
+                      </div>
+                      <div className="mt-4 text-center">
+                        <p className="text-sm text-muted-foreground">
+                          🏫 IIT Kanpur • IISc Bangalore • IIT Tirupati | 🌱 Soil Moisture • 🌧️ Rainfall • 🌡️ Environmental Data
+                        </p>
+                      </div>
+                    </TabsContent>
+                    
+                    <TabsContent value="city-data" className="mt-6">
+                      <div className="relative bg-muted rounded-xl overflow-hidden" style={{ height: '500px' }}>
+                        <iframe
+                          src="https://iittnif-fixed.vercel.app/"
+                          className="w-full h-full border-0"
+                          title="City Environmental Data Portal"
+                          loading="lazy"
+                        />
+                      </div>
+                      <div className="mt-4">
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-center text-xs">
+                          <div className="bg-blue-50 border border-blue-200 rounded p-2">
+                            <span className="text-blue-900">🌤️ Weather (4)</span>
+                          </div>
+                          <div className="bg-green-50 border border-green-200 rounded p-2">
+                            <span className="text-green-900">🌱 Soil (2)</span>
+                          </div>
+                          <div className="bg-emerald-50 border border-emerald-200 rounded p-2">
+                            <span className="text-emerald-900">🌿 Vegetation (7)</span>
+                          </div>
+                          <div className="bg-purple-50 border border-purple-200 rounded p-2">
+                            <span className="text-purple-900">🛰️ ECMWF (7)</span>
+                          </div>
+                        </div>
                       </div>
                     </TabsContent>
                     
@@ -616,8 +661,28 @@ export default function HomePage() {
                   onClick={() => window.open('/interactive-map-external', '_self')}
                 >
                   <Play className="h-5 w-5 mr-2 group-hover:scale-110 transition-transform" />
-                  Launch Interactive Map
+                  GNSS-R Portal
                   <Zap className="h-4 w-4 ml-2 group-hover:rotate-12 transition-transform" />
+                </Button>
+                
+                <Button
+                  size="lg"
+                  className="group bg-gradient-to-r from-orange-500 to-red-500 hover:scale-110 transition-all duration-300"
+                  onClick={() => window.open('/iit-map-external', '_self')}
+                >
+                  <span className="mr-2">�️</span>
+                  Research Institutes
+                  <span className="ml-2">🔬</span>
+                </Button>
+                
+                <Button
+                  size="lg"
+                  className="group bg-gradient-to-r from-blue-500 to-purple-500 hover:scale-110 transition-all duration-300"
+                  onClick={() => window.open('/city-data-external', '_self')}
+                >
+                  <span className="mr-2">🌍</span>
+                  City Environment
+                  <span className="ml-2">🛰️</span>
                 </Button>
                 
                 <Button
@@ -639,7 +704,7 @@ export default function HomePage() {
               </div>
               
               <p className="text-center text-muted-foreground mt-6 text-lg">
-                🌍 Explore real interactive data portals • 📡 Access live weather and ocean conditions • �️ Navigate real-time maps
+                🌍 Explore multiple interactive data portals • �️ Research institutes environmental data • 🌱 Multi-parameter city monitoring • 📡 Real-time weather and ocean conditions
               </p>
             </CardContent>
           </Card>
