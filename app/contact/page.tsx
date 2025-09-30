@@ -61,40 +61,39 @@ export default function ContactPage() {
                   <Card className="glass-card">
                     <CardHeader>
                       <CardTitle className="text-xl">Advisory Panel</CardTitle>
-                      <CardDescription>Advisors, mentors and experts</CardDescription>
                     </CardHeader>
                     <CardContent>
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         {/* Prof. YVN Krishnamurthy */}
                         <div className="p-4 rounded-lg bg-background/30 border flex items-center gap-4">
-                          <div className="relative h-16 w-16 rounded-full overflow-hidden border">
-                            <Image src="/yvn.jpg" alt="Prof. YVN Krishnamurthy" fill sizes="64px" className="object-cover" />
+                          <div className="relative h-20 w-20 rounded-full overflow-hidden border">
+                            <Image src="/yvn.jpg" alt="Prof. YVN Krishnamurthy" fill sizes="80px" className="object-cover" />
                           </div>
                           <div>
                             <h4 className="font-semibold leading-tight">Prof. YVN Krishnamurthy</h4>
-                            <p className="text-xs text-muted-foreground">IIT Tirupati • Advisor / Mentor</p>
+                            <p className="text-xs text-muted-foreground">IIT Tirupati</p>
                           </div>
                         </div>
 
                         {/* Dr. Avardh B Narayan */}
                         <div className="p-4 rounded-lg bg-background/30 border flex items-center gap-4">
-                          <div className="relative h-16 w-16 rounded-full overflow-hidden border">
-                            <Image src="/avadh.jpg" alt="Dr. Avardh B Narayan" fill sizes="64px" className="object-cover" />
+                          <div className="relative h-20 w-20 rounded-full overflow-hidden border">
+                            <Image src="/avadh.jpg" alt="Dr. Avardh B Narayan" fill sizes="80px" className="object-cover" />
                           </div>
                           <div>
                             <h4 className="font-semibold leading-tight">Dr. Avardh B Narayan</h4>
-                            <p className="text-xs text-muted-foreground">IIT Tirupati • Advisor / Expert</p>
+                            <p className="text-xs text-muted-foreground">IIT Tirupati</p>
                           </div>
                         </div>
 
                         {/* Dr. Ramesh Patel */}
                         <div className="p-4 rounded-lg bg-background/30 border flex items-center gap-4">
-                          <div className="relative h-16 w-16 rounded-full overflow-hidden border">
-                            <Image src="/ramesh.jpg" alt="Dr. Ramesh Patel" fill sizes="64px" className="object-cover" />
+                          <div className="relative h-20 w-20 rounded-full overflow-hidden border">
+                            <Image src="/ramesh.jpg" alt="Dr. Ramesh Patel" fill sizes="80px" className="object-cover" />
                           </div>
                           <div>
                             <h4 className="font-semibold leading-tight">Dr. Ramesh Patel</h4>
-                            <p className="text-xs text-muted-foreground">IIT Tirupati • Advisor / Expert</p>
+                            <p className="text-xs text-muted-foreground">IIT Tirupati</p>
                           </div>
                         </div>
                       </div>
@@ -117,8 +116,8 @@ export default function ContactPage() {
                     <CardHeader>
                       <div className="flex items-center justify-between flex-wrap gap-4">
                         <div className="flex items-center gap-4">
-                          <div className="relative h-16 w-16 rounded-full overflow-hidden border">
-                            <Image src="/roshan.jpg" alt="Dr. Roshan Srivastav" fill sizes="64px" className="object-cover" />
+                          <div className="relative h-20 w-20 rounded-full overflow-hidden border">
+                            <Image src="/roshan.jpg" alt="Dr. Roshan Srivastav" fill sizes="80px" className="object-cover" />
                           </div>
                           <CardTitle className="flex items-center gap-3 text-xl">
                             <Users className="h-5 w-5 text-primary" />
@@ -156,8 +155,8 @@ export default function ContactPage() {
                     <CardHeader>
                       <div className="flex items-center justify-between flex-wrap gap-4">
                         <div className="flex items-center gap-4">
-                          <div className="relative h-16 w-16 rounded-full overflow-hidden border">
-                            <Image src="/madhavi.jpg" alt="Dr. G Naga Sai Madhavi" fill sizes="64px" className="object-cover" />
+                          <div className="relative h-20 w-20 rounded-full overflow-hidden border">
+                            <Image src="/madhavi.jpg" alt="Dr. G Naga Sai Madhavi" fill sizes="80px" className="object-cover" />
                           </div>
                           <CardTitle className="flex items-center gap-3 text-xl">
                             <Users className="h-5 w-5 text-primary" />
@@ -176,8 +175,9 @@ export default function ContactPage() {
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                           <h4 className="font-semibold mb-2">Research Expertise</h4>
-                          <p className="text-muted-foreground mb-3">GNSS - Soil Moisture, Atmospheric Science and Climate Change</p>
+                          <p className="text-muted-foreground mb-3">GNSS Remote Sensing, Soil Moisture Studies, Atmospheric Science and Climate Change</p>
                           <div className="flex flex-wrap gap-2">
+                            <Badge variant="secondary">GNSS Remote Sensing</Badge>
                             <Badge variant="secondary">Soil Moisture</Badge>
                             <Badge variant="secondary">Atmospheric Science</Badge>
                             <Badge variant="secondary">Climate Change</Badge>
@@ -198,8 +198,8 @@ export default function ContactPage() {
                     <CardHeader>
                       <div className="flex items-center justify-between flex-wrap gap-4">
                         <div className="flex items-center gap-4">
-                          <div className="relative h-16 w-16 rounded-full overflow-hidden border">
-                            <Image src="/jashwanth.jpg" alt="Jashwanth Valurouthu" fill sizes="64px" className="object-cover" />
+                          <div className="relative h-20 w-20 rounded-full overflow-hidden border">
+                            <Image src="/jashwanth.jpg" alt="Jashwanth Valurouthu" fill sizes="80px" className="object-cover" />
                           </div>
                           <CardTitle className="flex items-center gap-3 text-xl">
                             <Users className="h-5 w-5 text-primary" />
