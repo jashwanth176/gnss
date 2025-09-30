@@ -155,10 +155,15 @@ export default function ContactPage() {
                   <Card className="glass-card">
                     <CardHeader>
                       <div className="flex items-center justify-between flex-wrap gap-4">
-                        <CardTitle className="flex items-center gap-3 text-xl">
-                          <Users className="h-5 w-5 text-primary" />
-                          Dr. G Naga Sai Madhavi
-                        </CardTitle>
+                        <div className="flex items-center gap-4">
+                          <div className="relative h-16 w-16 rounded-full overflow-hidden border">
+                            <Image src="/madhavi.jpg" alt="Dr. G Naga Sai Madhavi" fill sizes="64px" className="object-cover" />
+                          </div>
+                          <CardTitle className="flex items-center gap-3 text-xl">
+                            <Users className="h-5 w-5 text-primary" />
+                            Dr. G Naga Sai Madhavi
+                          </CardTitle>
+                        </div>
                         <Badge variant="outline" className="border-primary/50 text-primary">
                           Chanakya Post Doctoral Fellow
                         </Badge>
@@ -191,10 +196,15 @@ export default function ContactPage() {
                   <Card className="glass-card">
                     <CardHeader>
                       <div className="flex items-center justify-between flex-wrap gap-4">
-                        <CardTitle className="flex items-center gap-3 text-xl">
-                          <Users className="h-5 w-5 text-primary" />
-                          Jashwanth Valurouthu
-                        </CardTitle>
+                        <div className="flex items-center gap-4">
+                          <div className="relative h-16 w-16 rounded-full overflow-hidden border">
+                            <Image src="/jashwanth.jpg" alt="Jashwanth Valurouthu" fill sizes="64px" className="object-cover" />
+                          </div>
+                          <CardTitle className="flex items-center gap-3 text-xl">
+                            <Users className="h-5 w-5 text-primary" />
+                            Jashwanth Valurouthu
+                          </CardTitle>
+                        </div>
                         <Badge variant="outline" className="border-secondary/50 text-secondary">
                           Developer
                         </Badge>
